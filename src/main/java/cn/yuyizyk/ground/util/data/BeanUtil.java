@@ -40,9 +40,10 @@ public class BeanUtil {
 		return bean;
 	}
 
-	// public static <T> T toBean(Class<T> cls, String jsonStr) {
-	// return new GsonBuilder().create().fromGson(jsonStr, cls);
-	// }
+	public static <T> T toBean(Class<T> cls, String jsonStr) {
+		// return new GsonBuilder().create().fromGson(jsonStr, cls);
+		return null;
+	}
 
 	// public static GsonBuilder
 
