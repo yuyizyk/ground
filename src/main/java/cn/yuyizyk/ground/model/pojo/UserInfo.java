@@ -2,10 +2,9 @@ package cn.yuyizyk.ground.model.pojo;
 
 import java.util.Set;
 
-import com.alibaba.fastjson.JSONObject;
-
-import cn.yuyizyk.ground.model.annotations.Primarykey;
+import cn.yuyizyk.ground.model.annotations.Key;
 import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.util.data.SerializationUtil;
 
 /**
  * 用户表
@@ -16,15 +15,14 @@ import cn.yuyizyk.ground.model.annotations.Table;
 
 @Table("user_info")
 public class UserInfo extends SNFPOJO {
+	private static transient final long serialVersionUID = 1L;
 
-	@Primarykey
+	@Key
 	private String userid;
-	public String userid123;
 
 	private Set<RoleInfo> roles;
-	
-	@Primarykey(priority = 1)
-	private String password;
+
+	private transient String password;
 
 	public String getPassword() {
 		return password;
@@ -51,6 +49,8 @@ public class UserInfo extends SNFPOJO {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(JSONObject.toJSONString(SNFPOJO.getPrimaryKey(new UserInfo())));
+		UserInfo ui = POJO.formJsonStr("{\"userid\":\"1123\"}", UserInfo.class);
+		System.out.println(SerializationUtil.toJsonStr(ui.getPrimaryKey()));
+		System.out.println(ui);
 	}
 }

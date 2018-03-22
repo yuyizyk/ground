@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.yuyizyk.ground.model.annotations.Primarykey;
+import cn.yuyizyk.ground.model.annotations.Key;
 
 /**
  * 满足第二范式的实体类
@@ -20,6 +20,7 @@ import cn.yuyizyk.ground.model.annotations.Primarykey;
  *
  */
 public abstract class SNFPOJO extends POJO {
+	private static final long serialVersionUID = 1L;
 	private final static Logger log = LoggerFactory.getLogger(SNFPOJO.class);
 
 	/**
@@ -27,12 +28,36 @@ public abstract class SNFPOJO extends POJO {
 	 * 
 	 * @return
 	 */
-
 	public static final List<Entry<String, Object>> getPrimaryKey(SNFPOJO pojo) {
 		List<Field> fields = new ArrayList<>(Arrays.asList(pojo.getClass().getDeclaredFields()));
 		List<Entry<String, Object>> list = new LinkedList<>();
-		for (final Field f : fields) {
-			Primarykey primarykey = f.getAnnotation(Primarykey.class);
+		fields.forEach(f -> {
+			Key primarykey = f.getAnnotation(Key.class);
+			// 主键
+			if (primarykey != null && primarykey.value() == Key.Primarykey) {
+				try {
+					f.setAccessible(true);
+					list.add(primarykey.priority(),
+							new cn.yuyizyk.ground.model.entity.Entry<String, Object>(f.getName(), f.get(pojo)));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					log.error("", e);
+				}
+			}
+		});
+		Collections.reverse(list);
+		return list;
+	}
+
+	/**
+	 * 获得索引
+	 * 
+	 * @return
+	 */
+	public static final List<Entry<String, Object>> getIndexKey(SNFPOJO pojo) {
+		List<Field> fields = new ArrayList<>(Arrays.asList(pojo.getClass().getDeclaredFields()));
+		List<Entry<String, Object>> list = new LinkedList<>();
+		fields.forEach(f -> {
+			Key primarykey = f.getAnnotation(Key.class);
 			if (primarykey != null) {
 				try {
 					f.setAccessible(true);
@@ -42,9 +67,27 @@ public abstract class SNFPOJO extends POJO {
 					log.error("", e);
 				}
 			}
-		}
+		});
 		Collections.reverse(list);
 		return list;
+	}
+
+	/**
+	 * 获得主键
+	 * 
+	 * @return
+	 */
+	public List<Entry<String, Object>> getPrimaryKey() {
+		return getPrimaryKey(this);
+	}
+
+	/**
+	 * 获得索引
+	 * 
+	 * @return
+	 */
+	public List<Entry<String, Object>> getIndexKey() {
+		return getIndexKey(this);
 	}
 
 }

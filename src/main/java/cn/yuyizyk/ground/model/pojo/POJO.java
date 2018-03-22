@@ -1,10 +1,12 @@
 package cn.yuyizyk.ground.model.pojo;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Objects;
 
 import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.util.data.SerializationUtil;
 
 /**
  * Plain Old Java Object
@@ -14,10 +16,8 @@ import cn.yuyizyk.ground.model.annotations.Table;
  */
 public abstract class POJO implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 538421996313900437L;
+	private transient static final long serialVersionUID = 1L;
+
 	/**
 	 * 获得当前实体在数据库中的表名
 	 * 
@@ -35,7 +35,7 @@ public abstract class POJO implements Serializable {
 	 * @return
 	 */
 	public Map<String, Object> toMap() {
-		return null;
+		return SerializationUtil.toMap(this);
 	}
 
 	/**
@@ -43,8 +43,8 @@ public abstract class POJO implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String toJSONString() {
-		return "";
+	public String toJsonStr() {
+		return SerializationUtil.toJsonStr(this);
 	}
 
 	/**
@@ -53,8 +53,8 @@ public abstract class POJO implements Serializable {
 	 * @param map
 	 * @return
 	 */
-	public static final <T extends POJO> T byJSONString(Class<?> cls, String jsonStr) {
-		return null;
+	public static final <T extends POJO> T formJsonStr(String jsonStr, Class<T> cls) {
+		return SerializationUtil.toBean(jsonStr, cls);
 	}
 
 	/**
@@ -62,9 +62,18 @@ public abstract class POJO implements Serializable {
 	 * 
 	 * @param map
 	 * @return
+	 * @throws InstantiationException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
 	 */
-	public static final <T extends POJO> T byMap(Map<String, Object> map) {
-		return null;
+	public static final <T> T formMap(Class<T> cls, Map<String, Object> map)
+			throws IllegalAccessException, InvocationTargetException, InstantiationException {
+		return SerializationUtil.toBean(cls.newInstance(), map);
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + SerializationUtil.getGsonBuilder()
+				.excludeFieldsWithModifiers(java.lang.reflect.Modifier.STATIC).create().toJson(this);
+	}
 }

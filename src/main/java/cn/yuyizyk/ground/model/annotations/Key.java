@@ -6,10 +6,28 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 键（索引）
+ * 
+ * @author yuyi
+ *
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface Primarykey {
+public @interface Key {
+
+	/**
+	 * 主键
+	 */
+	static int Primarykey = 0;
+	/**
+	 * 索引
+	 */
+	static int Index = 1;
+
+	int value() default Primarykey;
+
 	/**
 	 * 优先级 0 为最小优先
 	 * 
