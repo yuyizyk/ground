@@ -37,6 +37,7 @@ public abstract class POJO implements Serializable {
 	public Map<String, Object> toMap() {
 		return SerializationUtil.toMap(this);
 	}
+	
 
 	/**
 	 * 转化为json字符串
@@ -54,7 +55,7 @@ public abstract class POJO implements Serializable {
 	 * @return
 	 */
 	public static final <T extends POJO> T formJsonStr(String jsonStr, Class<T> cls) {
-		return SerializationUtil.toBean(jsonStr, cls);
+		return SerializationUtil.toBeanByJson(jsonStr, cls);
 	}
 
 	/**

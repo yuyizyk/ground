@@ -48,10 +48,15 @@ public class ShiroConfig {
 	}
 
 	@Bean
-	public CustomizeRealm customizeRealm() {
+	public CustomizeRealm customizeRealm(CustomCredentialsMatcher customCredentialsMatcher) {
 		CustomizeRealm realm = new CustomizeRealm();
 		realm.setCredentialsMatcher(new CustomCredentialsMatcher());
 		return realm;
+	}
+
+	@Bean
+	public CustomCredentialsMatcher customCredentialsMatcher() {
+		return new CustomCredentialsMatcher();
 	}
 
 	/**
@@ -59,7 +64,7 @@ public class ShiroConfig {
 	 * 
 	 * @return
 	 */
-	@Bean
+	@Bean(name = "securityManager")
 	public DefaultWebSecurityManager securityManager(CustomizeRealm customizeRealm, EhCacheManager ehCacheManager) {
 
 		DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();

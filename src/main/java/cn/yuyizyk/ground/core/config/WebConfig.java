@@ -25,7 +25,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "cn.yuyi.ground" }, useDefaultFilters = true)
+@ComponentScan(basePackages = { "cn.yuyizyk.ground" }, useDefaultFilters = true)
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private final static Logger log = LoggerFactory.getLogger(WebConfig.class);
 

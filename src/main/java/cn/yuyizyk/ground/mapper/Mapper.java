@@ -46,8 +46,8 @@ public interface Mapper<T extends POJO> {
 	 * @param record
 	 * @return
 	 */
-	@SelectProvider(type = MapperProvider.class, method = "listByFilter")
-	List<T> listByFilter(T record);
+	@SelectProvider(type = MapperProvider.class, method = "list")
+	List<T> list(T record);
 
 	/**
 	 * 查询记录 <br/>
@@ -56,8 +56,8 @@ public interface Mapper<T extends POJO> {
 	 * @param record
 	 * @return
 	 */
-	@SelectProvider(type = MapperProvider.class, method = "listByFilter")
-	List<T> listByFilter(String tableName, Map<String, Object> record);
+	@SelectProvider(type = MapperProvider.class, method = "sortFilterList")
+	List<T> sortFilterList(String tableName, Map<String, Object> filter, Map<String, Object> sort);
 
 	/**
 	 * 查询记录总数 <br/>

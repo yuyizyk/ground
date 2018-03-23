@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.mapper.interceptor;
+package cn.yuyizyk.ground.mapper.provider;
 
 public class EntityInterceptor {
 

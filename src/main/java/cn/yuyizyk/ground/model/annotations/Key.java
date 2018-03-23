@@ -20,11 +20,11 @@ public @interface Key {
 	/**
 	 * 主键
 	 */
-	static int Primarykey = 0;
+	static final int Primarykey = 0;
 	/**
 	 * 索引
 	 */
-	static int Index = 1;
+	static final int Index = 1;
 
 	int value() default Primarykey;
 

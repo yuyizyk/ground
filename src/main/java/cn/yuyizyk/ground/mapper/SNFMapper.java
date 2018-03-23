@@ -19,7 +19,7 @@ public interface SNFMapper<T extends SNFPOJO> extends Mapper<SNFPOJO> {
 	 * @param id
 	 * @return
 	 */
-	@SelectProvider(type = SNFMapperProvider.class, method = "byId")
+	//@SelectProvider(type = SNFMapperProvider.class, method = "byId")
 	T byId(T record);
 
 	/**

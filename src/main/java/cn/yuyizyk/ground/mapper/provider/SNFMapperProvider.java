@@ -1,7 +1,7 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.interceptor.EntityInterceptor.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.interceptor.EntityInterceptor.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldValue;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -12,7 +12,7 @@ import org.apache.ibatis.jdbc.SQL;
 import cn.yuyizyk.ground.model.pojo.SNFPOJO;
 
 /**
- * 单表sql语句拼装; </>
+ * SNF单表sql语句拼装; </>
  * 
  * @author yuyi
  *

@@ -23,7 +23,7 @@ import cn.yuyizyk.ground.core.filter.BaseFilter;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "cn.yuyi.ground" }, excludeFilters = {
+@ComponentScan(basePackages = { "cn.yuyizyk.ground" }, excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 @Import(ApplicationDataConfig.class)
 // @PropertySource({"classpath:jdbc.properties"})

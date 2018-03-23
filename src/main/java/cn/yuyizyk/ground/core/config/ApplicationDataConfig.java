@@ -25,7 +25,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@MapperScan(basePackages = { "cn.yuyi.ground.mapper" })
+@MapperScan(basePackages = { "cn.yuyizyk.ground.mapper" })
 public class ApplicationDataConfig {
 	private final static Logger log = LoggerFactory.getLogger(ApplicationDataConfig.class);
 
