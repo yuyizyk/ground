@@ -1,15 +1,16 @@
 package cn.yuyizyk.ground.model.entity;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * 页
+ * 页数据
  * 
  * @author yuyi
  *
  */
-public class Page<T> extends ArrayList<T> {
-	private static final long serialVersionUID = -3183963314104279483L;
+public class Page<T> implements Serializable {
+	private static final transient long serialVersionUID = 1l;
 
 	/**
 	 * 当前页
@@ -23,6 +24,8 @@ public class Page<T> extends ArrayList<T> {
 	 * 总数
 	 */
 	private Long totals;
+
+	private List<T> data;
 
 	public Integer getPage() {
 		return page;
@@ -48,21 +51,12 @@ public class Page<T> extends ArrayList<T> {
 		this.totals = totals;
 	}
 
-	/**
-	 * 转化为json字符串
-	 * 
-	 * @return
-	 */
-	public String toJSONString() {
-		return null;
+	public List<T> getData() {
+		return data;
 	}
 
-	/**
-	 * 转化为xml字符串
-	 * 
-	 * @return
-	 */
-	public String toXMLString() {
-		return null;
+	public void setData(List<T> data) {
+		this.data = data;
 	}
+
 }

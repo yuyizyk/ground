@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -151,10 +152,12 @@ public class SerializationUtil implements Serializable {
 		RoleInfo e = new RoleInfo();
 		e.setRolename("角色1");
 		roles.add(e);
-		u.setRoles(roles);
-		System.out.println(u.toJsonStr());
+//		u.setRoles(roles);
+
+		System.out.println(u.toMap());
 
 		getGsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategyUtil.RegularOutput()).create();
+
 		// getGsonBuilder().registerTypeHierarchyAdapter(POJO.class, new
 		// TypeAdapter<POJO>() {
 		//
@@ -221,20 +224,42 @@ public class SerializationUtil implements Serializable {
 	}
 
 	/**
-	 * toMap
+	 * toMapByGetter <br/>
+	 * 通过对象的getter 获得
 	 * 
 	 * @param obj
 	 * @return
 	 */
-	public static final HashMap<String, Object> toMap(Object obj) {
+	public static final HashMap<String, Object> toMapByGetter(Object obj) {
+		return toMapByGetter(obj, a -> {
+			return true;
+		}, a -> {
+			return true;
+		});
+	}
+
+	/**
+	 * toMapByGetter <br/>
+	 * 通过对象的getter 获得
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static final HashMap<String, Object> toMapByGetter(Object obj,
+			final Function<PropertyDescriptor, Boolean> checkPropertyDescriptor,
+			final Function<Object, Boolean> checkValue) {
 		HashMap<String, Object> params = new HashMap<String, Object>(0);
 		try {
 			PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
 			PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
+			String name;
+			Object val;
 			for (int i = 0; i < descriptors.length; i++) {
-				String name = descriptors[i].getName();
-				if (!"class".equals(name)) {
-					params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
+				name = descriptors[i].getName();
+				if (!"class".equals(name) && checkPropertyDescriptor.apply(descriptors[i])) {
+					val = propertyUtilsBean.getNestedProperty(obj, name);
+					if (checkValue.apply(val))
+						params.put(name, val);
 				}
 			}
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

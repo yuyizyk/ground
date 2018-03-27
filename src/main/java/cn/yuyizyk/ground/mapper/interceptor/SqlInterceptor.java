@@ -9,6 +9,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
@@ -39,20 +40,19 @@ public class SqlInterceptor implements Interceptor {
 
 		// TODO 还可以记录参数，或者单表id操作时，记录数据操作前的状态
 		// 获取insertSqlLog方法
-		ms = ms.getConfiguration().getMappedStatement("insertSqlLog");
+		// ms = ms.getConfiguration().getMappedStatement("insertSqlLog");
 		// 替换当前的参数为新的ms
-		args[0] = ms;
+		// args[0] = ms;
 
 		// 执行insertSqlLog方法
-		invocation.proceed();
+		// invocation.proceed();
 		// 返回真正方法执行的结果
 		return result;
 	}
 
 	@Override
 	public Object plugin(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return Plugin.wrap(target, this);
 	}
 
 	@Override

@@ -1,5 +1,12 @@
 package cn.yuyizyk.ground.model.entity;
 
+/**
+ * 
+ * @author yuyi
+ * 
+ * @param <K>
+ * @param <V>
+ */
 public class Entry<K, V> implements java.util.Map.Entry<K, V> {
 
 	final private K key;

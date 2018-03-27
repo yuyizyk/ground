@@ -1,11 +1,15 @@
 package cn.yuyizyk.ground.model.pojo;
 
+import cn.yuyizyk.ground.model.annotations.Key;
 import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
 @Table("role_info")
 public class RoleInfo extends SNFPOJO {
 	private static transient final long serialVersionUID = 1L;
 
+	@Key
+	private String roleid;
 	private String rolename;
 
 	public String getRolename() {
@@ -15,4 +19,9 @@ public class RoleInfo extends SNFPOJO {
 	public void setRolename(String rolename) {
 		this.rolename = rolename;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

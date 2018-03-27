@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Select;
 
 import cn.yuyizyk.ground.model.pojo.UserInfo;
 
-public interface UserMapper extends SNFMapper<UserInfo> {
+public interface UserMapper extends SNFMapper {
 
 	/**
 	 * 
@@ -15,4 +15,5 @@ public interface UserMapper extends SNFMapper<UserInfo> {
 	@Select("SELECT * FROM user_info WHERE username=#{username} ")
 	UserInfo byAccount(@Param("username") String username);
 
+	
 }

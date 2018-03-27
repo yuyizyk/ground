@@ -1,9 +1,9 @@
 package cn.yuyizyk.ground.model.pojo;
 
-import java.util.Set;
-
 import cn.yuyizyk.ground.model.annotations.Key;
 import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.model.pojo.base.POJO;
+import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 import cn.yuyizyk.ground.util.data.SerializationUtil;
 
 /**
@@ -12,15 +12,12 @@ import cn.yuyizyk.ground.util.data.SerializationUtil;
  * @author yuyi
  *
  */
-
 @Table("user_info")
 public class UserInfo extends SNFPOJO {
 	private static transient final long serialVersionUID = 1L;
 
 	@Key
 	private String userid;
-
-	private Set<RoleInfo> roles;
 
 	private transient String password;
 
@@ -30,14 +27,6 @@ public class UserInfo extends SNFPOJO {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Set<RoleInfo> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<RoleInfo> roles) {
-		this.roles = roles;
 	}
 
 	public String getUserid() {
@@ -50,7 +39,7 @@ public class UserInfo extends SNFPOJO {
 
 	public static void main(String[] args) {
 		UserInfo ui = POJO.formJsonStr("{\"userid\":\"1123\"}", UserInfo.class);
-		System.out.println(SerializationUtil.toJsonStr(ui.getPrimaryKey()));
+		System.out.println(SerializationUtil.toJsonStr(ui.primaryKey()));
 		System.out.println(ui);
 	}
 }

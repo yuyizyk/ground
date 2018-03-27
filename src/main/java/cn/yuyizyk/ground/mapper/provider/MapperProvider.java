@@ -1,15 +1,15 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldValue;
 import static cn.yuyizyk.ground.mapper.provider.SqlForMySql.toPage;
+
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
 
-import cn.yuyizyk.ground.model.pojo.POJO;
+import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**
  * 单表sql语句拼装; <br/>
@@ -21,30 +21,41 @@ import cn.yuyizyk.ground.model.pojo.POJO;
 public class MapperProvider {
 
 	/**
+	 * 返回指定的有序分页集合的sql语句
+	 * 
+	 * @return
+	 */
+	public <T extends POJO> String page(/* ProviderContext context, */ Class<T> cls, int page, int size,
+			Map<String, Object> filterMap, Map<String, Object> sortMap) {
+		assert page >= 1 & size >= 1;
+		return toPage(list(/* context, */ cls, filterMap, sortMap), page, size);
+	}
+
+	/**
 	 * 返回指定的有序集合的sql语句
 	 * 
-	 * @param context
 	 * @param tableName
 	 * @param filterMap
 	 * @param sortMap
 	 * @return
 	 */
-	public String sortFilterList(ProviderContext context, String tableName, Map<String, Object> filterMap,
+	public <T extends POJO> String list(/* ProviderContext context */ Class<T> cls, Map<String, Object> filterMap,
 			Map<String, Object> sortMap) {
+		assert cls != null;
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(tableName);
+				FROM(T.tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
-						if (Objects.isNull(v)) {
+						if (Objects.nonNull(v)) {
 							WHERE(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
 									.toString());
 						}
 					});
 				if (sortMap != null)
 					sortMap.forEach((k, v) -> {
-						if (Objects.isNull(v)) {
+						if (Objects.nonNull(v)) {
 							ORDER_BY(new StringBuffer().append(toSQLFieldName(k)).append(" ").append(v).toString());
 						}
 					});
@@ -53,40 +64,17 @@ public class MapperProvider {
 	}
 
 	/**
-	 * 返回指定的有序的分页集合的sql语句
 	 * 
-	 * @param context
-	 * @param tableName
+	 * @param cls
 	 * @param filterMap
-	 * @param sortMap
 	 * @return
 	 */
-	public String sortFilterPage(ProviderContext context, String tableName, int page, int size,
-			Map<String, Object> filterMap, Map<String, Object> sortMap) {
-		return toPage(sortFilterList(context, tableName, filterMap, sortMap), page, size);
-	}
-
-	/**
-	 * 根据指定的对象返回集合
-	 * 
-	 * @param context
-	 * @param record
-	 *            对象中非空属性为and filter
-	 * @return
-	 */
-	public <T extends POJO> String list(ProviderContext context, T record) {
-		return sortFilterList(context, T.getTableName(record), record.toMap(), null);
-	}
-
-	public <T extends POJO> String page(ProviderContext context, int page, int size, T record) {
-		return sortFilterPage(context, T.getTableName(record), page, size, record.toMap(), null);
-	}
-
-	public String filterTotal(ProviderContext context, String tableName, Map<String, Object> filterMap) {
+	public <T extends POJO> String total(/* ProviderContext context, */ Class<T> cls, Map<String, Object> filterMap) {
+		assert cls != null;
 		return new SQL() {
 			{
 				SELECT(" count(1) ");
-				FROM(tableName);
+				FROM(T.tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.isNull(v)) {
@@ -98,8 +86,79 @@ public class MapperProvider {
 		}.toString();
 	}
 
-	public <T extends POJO> String total(ProviderContext context, T record) {
-		return filterTotal(context, T.getTableName(record), record.toMap());
+	/**
+	 * 返回删除指定属性的对象的sql
+	 * 
+	 * @param cls
+	 * @param filterMap
+	 * @return
+	 */
+	public <T extends POJO> String delete(Class<T> cls, Map<String, Object> filterMap) {
+		assert cls != null;
+		return new SQL() {
+			{
+				DELETE_FROM("*");
+				FROM(T.tableName(cls));
+				if (filterMap != null)
+					filterMap.forEach((k, v) -> {
+						if (Objects.nonNull(v)) {
+							WHERE(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
+									.toString());
+						}
+					});
+			}
+		}.toString();
 	}
 
+	/**
+	 * 返回依据指定属性的对象进行更新的sql
+	 * 
+	 * @param cls
+	 * @param filterMap
+	 * @return
+	 */
+	public <T extends POJO> String update(Class<T> cls, Map<String, Object> filterMap, Map<String, Object> updataMap) {
+		assert cls != null;
+		assert filterMap != null;
+		assert updataMap != null;
+		return new SQL() {
+			{
+				UPDATE(T.tableName(cls));
+				updataMap.forEach((k, v) -> {
+					if (Objects.nonNull(v)) {
+						SET(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
+								.toString());
+					}
+				});
+				filterMap.forEach((k, v) -> {
+					if (Objects.nonNull(v)) {
+						WHERE(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
+								.toString());
+					}
+				});
+			}
+		}.toString();
+	}
+
+	/**
+	 * 返回插入指定属性的对象的sql
+	 * 
+	 * @param cls
+	 * @param filterMap
+	 * @return
+	 */
+	public <T extends POJO> String insert(Class<T> cls, Map<String, Object> map) {
+		assert cls != null;
+		assert map != null;
+		return new SQL() {
+			{
+				INSERT_INTO(T.tableName(cls));
+				map.forEach((k, v) -> {
+					if (Objects.nonNull(v)) {
+						VALUES(toSQLFieldName(k), toSQLFieldValue(v));
+					}
+				});
+			}
+		}.toString();
+	}
 }

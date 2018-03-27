@@ -1,9 +1,6 @@
 package cn.yuyizyk.ground.mapper;
 
-import org.apache.ibatis.annotations.SelectProvider;
-
-import cn.yuyizyk.ground.mapper.provider.SNFMapperProvider;
-import cn.yuyizyk.ground.model.pojo.SNFPOJO;
+import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
 /**
  * Second Normal Form
@@ -11,7 +8,7 @@ import cn.yuyizyk.ground.model.pojo.SNFPOJO;
  * @author yuyi
  *
  */
-public interface SNFMapper<T extends SNFPOJO> extends Mapper<SNFPOJO> {
+public interface SNFMapper extends Mapper {
 
 	/**
 	 * 通过主键ID获得记录
@@ -19,8 +16,8 @@ public interface SNFMapper<T extends SNFPOJO> extends Mapper<SNFPOJO> {
 	 * @param id
 	 * @return
 	 */
-	//@SelectProvider(type = SNFMapperProvider.class, method = "byId")
-	T byId(T record);
+	// @SelectProvider(type = SNFMapperProvider.class, method = "byId")
+	<T extends SNFPOJO> T byId(T record);
 
 	/**
 	 * 保存记录 <br/>
@@ -30,7 +27,7 @@ public interface SNFMapper<T extends SNFPOJO> extends Mapper<SNFPOJO> {
 	 * 
 	 * @return 保存后的记录，失败为空
 	 */
-	T save(T record);
+	<T extends SNFPOJO> T save(T record);
 
 	/**
 	 * 删除
@@ -39,6 +36,6 @@ public interface SNFMapper<T extends SNFPOJO> extends Mapper<SNFPOJO> {
 	 * 
 	 * @return 被删除的记录,删除失败为空
 	 */
-	T deleteById(String id);
+	<T extends SNFPOJO> T deleteById(String id);
 
 }

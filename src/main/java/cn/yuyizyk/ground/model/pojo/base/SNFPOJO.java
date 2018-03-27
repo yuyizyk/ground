@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.model.pojo;
+package cn.yuyizyk.ground.model.pojo.base;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public abstract class SNFPOJO extends POJO {
 	 * 
 	 * @return
 	 */
-	public static final List<Entry<String, Object>> getPrimaryKey(SNFPOJO pojo) {
+	public static final List<Entry<String, Object>> primaryKey(SNFPOJO pojo) {
 		List<Field> fields = new ArrayList<>(Arrays.asList(pojo.getClass().getDeclaredFields()));
 		List<Entry<String, Object>> list = new LinkedList<>();
 		fields.forEach(f -> {
@@ -53,7 +53,7 @@ public abstract class SNFPOJO extends POJO {
 	 * 
 	 * @return
 	 */
-	public static final List<Entry<String, Object>> getIndexKey(SNFPOJO pojo) {
+	public static final List<Entry<String, Object>> indexKey(SNFPOJO pojo) {
 		List<Field> fields = new ArrayList<>(Arrays.asList(pojo.getClass().getDeclaredFields()));
 		List<Entry<String, Object>> list = new LinkedList<>();
 		fields.forEach(f -> {
@@ -77,8 +77,8 @@ public abstract class SNFPOJO extends POJO {
 	 * 
 	 * @return
 	 */
-	public List<Entry<String, Object>> getPrimaryKey() {
-		return getPrimaryKey(this);
+	public List<Entry<String, Object>> primaryKey() {
+		return primaryKey(this);
 	}
 
 	/**
@@ -86,8 +86,8 @@ public abstract class SNFPOJO extends POJO {
 	 * 
 	 * @return
 	 */
-	public List<Entry<String, Object>> getIndexKey() {
-		return getIndexKey(this);
+	public List<Entry<String, Object>> indexKey() {
+		return indexKey(this);
 	}
 
 }

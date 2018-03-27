@@ -36,15 +36,4 @@ import cn.yuyizyk.ground.core.filter.BaseFilter;
 // @PropertySource，加载指定的配置文件，配置文件内容会加载入Environment中等待调用*/
 public class ApplicationConfig {
 	private final static Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
-
-	/*
-	 * @Bean public MapperScannerConfigurer mapperScannerConfigurer() {
-	 * MapperScannerConfigurer mapperScannerConfigurer = new
-	 * MapperScannerConfigurer(); // 跟@MapperScan(basePackages = {
-	 * "com.ouyang.teson.dao" }) 等同 // 如果通过web.xml 加载servlet的话，可能找不到映射对象 建议用注解
-	 * mapperScannerConfigurer.setBasePackage("com.ouyang.teson.dao");
-	 * mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-	 * return mapperScannerConfigurer; }
-	 */
-
 }

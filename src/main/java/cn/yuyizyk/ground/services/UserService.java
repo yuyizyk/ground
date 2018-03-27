@@ -5,9 +5,10 @@ import org.springframework.stereotype.Service;
 
 import cn.yuyizyk.ground.mapper.UserMapper;
 import cn.yuyizyk.ground.model.pojo.UserInfo;
+import cn.yuyizyk.ground.services.base.AbstractService;
 
 @Service
-public class UserService {
+public class UserService extends AbstractService {
 
 	@Autowired
 	private UserMapper userMapper;

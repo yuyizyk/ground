@@ -1,11 +1,15 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-public class EntityInterceptor {
+import cn.yuyizyk.ground.mapper.entity.JoinField;
+
+public class EntityProvider {
 
 	public static final String toSQLFieldValue(Object val) {
-		return val.toString();
+		if (val instanceof JoinField)
+			return val.toString();
+		return String.format(" '%s' ", val != null ? val.toString() : "");
 	}
-	
+
 	/**
 	 * 将实体字段转化为数据库字段
 	 * 
@@ -15,4 +19,5 @@ public class EntityInterceptor {
 	public static final String toSQLFieldName(String fieldName) {
 		return fieldName;
 	}
+
 }

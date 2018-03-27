@@ -1,7 +1,7 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.provider.EntityInterceptor.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldValue;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
 
-import cn.yuyizyk.ground.model.pojo.SNFPOJO;
+import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
 /**
  * SNF单表sql语句拼装; </>
@@ -48,6 +48,6 @@ public class SNFMapperProvider extends MapperProvider {
 	 * @return
 	 */
 	public <T extends SNFPOJO> String byId(ProviderContext context, T record) {
-		return byId(context, T.getTableName(record), T.getPrimaryKey(record));
+		return byId(context, record.tableName(), record.primaryKey());
 	}
 }

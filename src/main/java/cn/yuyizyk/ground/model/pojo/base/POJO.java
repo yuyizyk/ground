@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.model.pojo;
+package cn.yuyizyk.ground.model.pojo.base;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +14,7 @@ import cn.yuyizyk.ground.util.data.SerializationUtil;
  * @author yuyi
  *
  */
-public abstract class POJO implements Serializable {
+public class POJO implements Serializable {
 
 	private transient static final long serialVersionUID = 1L;
 
@@ -22,9 +22,21 @@ public abstract class POJO implements Serializable {
 	 * 获得当前实体在数据库中的表名
 	 * 
 	 * @return
+	 * 
+	 * @return
 	 */
-	public static final String getTableName(POJO pojo) {
-		final Table table = pojo.getClass().getAnnotation(Table.class);
+	public String tableName() {
+		return tableName(this.getClass());
+	}
+
+	/**
+	 * 获得当前实体在数据库中的表名
+	 * 
+	 * @return
+	 */
+	public static final String tableName(Class<? extends POJO> cls) {
+		Objects.requireNonNull(cls, " pojo.class  is  null");
+		final Table table = cls.getAnnotation(Table.class);
 		Objects.requireNonNull(table, "POJO not comply Table Annotation");
 		return table.value();
 	}
@@ -35,9 +47,29 @@ public abstract class POJO implements Serializable {
 	 * @return
 	 */
 	public Map<String, Object> toMap() {
-		return SerializationUtil.toMap(this);
+		return SerializationUtil.toMapByGetter(this);
 	}
-	
+
+	/**
+	 * 将POJO转化为MAP对象
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> toSqlMap() {
+		return SerializationUtil.toMapByGetter(this, pd -> {
+			if (POJO.class.isAssignableFrom(pd.getPropertyType()))
+				return false;
+			if (String.class.isAssignableFrom(pd.getPropertyType()))
+				return true;
+			if (Number.class.equals(pd.getPropertyType()))
+				return true;
+			return false;
+		}, val -> {
+			if (val == null)
+				return false;
+			return true;
+		});
+	}
 
 	/**
 	 * 转化为json字符串

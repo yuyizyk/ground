@@ -1,6 +1,8 @@
-package cn.yuyizyk.ground;
+package cn.yuyizyk.ground.core;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -17,14 +19,10 @@ import cn.yuyizyk.ground.core.config.WebConfig;
 
 public class WebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	/*
-	 * @Override public void onStartup(ServletContext servletContext) throws
-	 * ServletException { // 定义filter javax.servlet.FilterRegistration.Dynamic
-	 * filter = servletContext.addFilter("myFilter", MyFilter.class);
-	 * filter.addMappingForUrlPatterns(null, false, "/custom/*");
-	 * 
-	 * }
-	 */
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		super.onStartup(servletContext);
+	}
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
