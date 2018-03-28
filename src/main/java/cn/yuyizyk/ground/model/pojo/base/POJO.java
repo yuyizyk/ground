@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Objects;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+
 import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.util.data.SerializationUtil;
 
@@ -104,9 +107,14 @@ public class POJO implements Serializable {
 		return SerializationUtil.toBean(cls.newInstance(), map);
 	}
 
+	protected static final Gson consoleGson = SerializationUtil.getGsonBuilder()
+			.excludeFieldsWithModifiers(java.lang.reflect.Modifier.STATIC).create();
+
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + SerializationUtil.getGsonBuilder()
-				.excludeFieldsWithModifiers(java.lang.reflect.Modifier.STATIC).create().toJson(this);
+		if (Objects.isNull(this.getClass().getCanonicalName())) {
+			return JSONObject.toJSONString(this);
+		}
+		return consoleGson.toJson(this);
 	}
 }

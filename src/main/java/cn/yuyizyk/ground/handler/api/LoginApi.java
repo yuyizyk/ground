@@ -1,6 +1,6 @@
 package cn.yuyizyk.ground.handler.api;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,7 +44,7 @@ public class LoginApi extends AbstractApi {
 			// 写seesion，保存当前user对象
 			UserInfo curUser = (UserInfo) subject.getPrincipal(); // 从shiro中获取当前用户
 			// System.out.println(curUser.getDept().getDeptName()); // 让懒加载变成立即加载
-			Set<RoleInfo> roles = curUser.getRoles();
+			List<RoleInfo> roles = curUser.getRoles();
 			/*
 			 * for (Role role : roles) { Set<Module> moduless = role.getModules(); for
 			 * (Module m : moduless) System.out.println(m.getName()); }

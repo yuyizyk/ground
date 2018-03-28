@@ -46,7 +46,7 @@ public class CustomizeRealm extends AuthorizingRealm {
 		// 得到权限字符串
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-		Set<RoleInfo> roles = user.getRoles();
+		List<RoleInfo> roles = user.getRoles();
 		List<String> list = new ArrayList<>();
 		for (RoleInfo role : roles) {
 			/*

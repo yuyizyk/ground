@@ -1,6 +1,6 @@
 package cn.yuyizyk.ground.model.pojo;
 
-import cn.yuyizyk.ground.model.annotations.Key;
+import cn.yuyizyk.ground.model.annotations.PrimaryKey;
 import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
@@ -8,7 +8,7 @@ import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 public class RoleInfo extends SNFPOJO {
 	private static transient final long serialVersionUID = 1L;
 
-	@Key
+	@PrimaryKey
 	private String roleid;
 	private String rolename;
 

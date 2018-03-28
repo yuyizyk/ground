@@ -54,7 +54,7 @@ public class SerializationUtil implements Serializable {
 				// .registerTypeAdapter(Type type, Object typeAdapter)//配置Gson以进行自定义序列化或反序列化
 				// .registerTypeAdapterFactory(TypeAdapterFactory factory//)为类型适配器注册一个工厂。
 				// .registerTypeHierarchyAdapter(baseType,typeAdapter)//将Gson配置为继承类型层次结构的自定义序列化或反序列化。
-				// .setExclusionStrategies(strategies)//配置Gson在序列化和反序列化过程中应用一组排除策略。
+				.setExclusionStrategies(new ExclusionStrategyUtil.RegularOutput())// 配置Gson在序列化和反序列化过程中应用一组排除策略。
 				// .disableInnerClassSerialization()// 配置Gson在序列化过程中排除内部类。
 				// .addSerializationExclusionStrategy(strategy)//配置Gson在序列化过程中应用传入的排除策略
 				// .addDeserializationExclusionStrategy(strategy)// 在反序列化过程中应用的排除策略
@@ -152,7 +152,7 @@ public class SerializationUtil implements Serializable {
 		RoleInfo e = new RoleInfo();
 		e.setRolename("角色1");
 		roles.add(e);
-//		u.setRoles(roles);
+		// u.setRoles(roles);
 
 		System.out.println(u.toMap());
 

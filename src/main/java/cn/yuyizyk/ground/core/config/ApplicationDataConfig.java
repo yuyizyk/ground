@@ -2,7 +2,9 @@ package cn.yuyizyk.ground.core.config;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -98,4 +100,15 @@ public class ApplicationDataConfig {
 	public ApplicationInfo applicationInfo() {
 		return ApplicationInfo.newInstance();
 	}
+
+	/**
+	 * 多表映射
+	 * 
+	 * @return
+	 */
+	@Bean
+	public Map<String, Object> mymapper() {
+		return new HashMap<String, Object>();
+	}
+
 }

@@ -1,7 +1,7 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.provider.EntityProvider.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldValue;
 import static cn.yuyizyk.ground.mapper.provider.SqlForMySql.toPage;
 
 import java.util.Map;
@@ -64,7 +64,7 @@ public class MapperProvider {
 	}
 
 	/**
-	 * 
+	 * 总数
 	 * @param cls
 	 * @param filterMap
 	 * @return
@@ -77,7 +77,7 @@ public class MapperProvider {
 				FROM(T.tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
-						if (Objects.isNull(v)) {
+						if (Objects.nonNull(v)) {
 							WHERE(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
 									.toString());
 						}

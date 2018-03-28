@@ -1,18 +1,34 @@
 package cn.yuyizyk.ground.mapper.interceptor;
 
+import java.lang.reflect.Field;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.executor.keygen.KeyGenerator;
+import org.apache.ibatis.executor.keygen.SelectKeyGenerator;
+import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.ResultMapping;
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.RowBounds;
+
+import cn.yuyizyk.ground.model.annotations.Column;
+import cn.yuyizyk.ground.model.annotations.Generated;
+import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 @Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
 public class SqlInterceptor implements Interceptor {
@@ -28,26 +44,69 @@ public class SqlInterceptor implements Interceptor {
 		 */
 		Object[] args = invocation.getArgs();
 		MappedStatement ms = (MappedStatement) args[0];
-		Object parameter = args[1];
-		Configuration configuration = ms.getConfiguration();
-		Object target = invocation.getTarget();
-		StatementHandler handler = configuration.newStatementHandler((Executor) target, ms, parameter,
-				RowBounds.DEFAULT, null, null);
-		BoundSql boundSql = handler.getBoundSql();
+		Object parameterObject = args[1];
+		// 获取参数中设置的返回值类型
+		Class<?> resultType = getResultType(parameterObject);
+		if (resultType == null) {
+			return invocation.proceed();
+		}
 
-		// 执行真正的方法
-		Object result = invocation.proceed();
+		// 复制ms，重设
+		args[0] = newMappedStatement(ms, resultType);
 
-		// TODO 还可以记录参数，或者单表id操作时，记录数据操作前的状态
-		// 获取insertSqlLog方法
-		// ms = ms.getConfiguration().getMappedStatement("insertSqlLog");
-		// 替换当前的参数为新的ms
-		// args[0] = ms;
+		return invocation.proceed();
+	}
 
-		// 执行insertSqlLog方法
-		// invocation.proceed();
-		// 返回真正方法执行的结果
-		return result;
+	private Object newMappedStatement(MappedStatement ms, Class<?> resultType) {
+		if (!(POJO.class.isAssignableFrom(resultType))) {
+			return ms;
+		}
+		List<ResultMap> ls = new ArrayList<>();
+
+		List<Field> fields = Arrays.asList(resultType.getDeclaredFields());
+		for (Field f : fields) {
+			if ((f.getModifiers() & (java.lang.reflect.Modifier.STATIC)) == java.lang.reflect.Modifier.STATIC)
+				continue;
+			Generated g = f.getAnnotation(Generated.class);
+			if (g != null) {
+				try {
+					// 自动映射
+					List<ResultMapping> newLi = new ArrayList<>();
+					ls.add(new ResultMap.Builder(ms.getConfiguration(), ms.getId() + "!SelectKey-Inline", f.getType(),
+							newLi).build());
+					SqlSource sqls = new StaticSqlSource(ms.getConfiguration(), g.value());
+					SelectKeyGenerator s = new SelectKeyGenerator(
+							new MappedStatement.Builder(ms.getConfiguration(), ms.getId() + "!SelectKey", sqls,
+									ms.getSqlCommandType()).keyProperty("userid").resultMaps(ls).build(),
+							true);
+					return new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), ms.getSqlSource(),
+							ms.getSqlCommandType()).keyGenerator(s).build();
+				} catch (IllegalArgumentException e) {
+					// log.error("", e);
+				}
+			}
+		}
+		return ms;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<?> getResultType(Object parameterObject) {
+		if (parameterObject instanceof POJO)
+			return parameterObject.getClass();
+		if (parameterObject instanceof Map) {
+			Iterator<Entry<String, Object>> iterator = ((Map<String, Object>) parameterObject).entrySet().iterator();
+			Entry<String, Object> entry;
+			while (iterator.hasNext()) {
+				entry = iterator.next();
+				if (entry.getValue() instanceof POJO) {
+					return entry.getValue().getClass();
+				} else if (entry.getValue() instanceof Class<?>
+						&& POJO.class.isAssignableFrom((Class<?>) entry.getValue())) {
+					return (Class<?>) entry.getValue();
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

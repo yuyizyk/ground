@@ -12,8 +12,8 @@ public interface UserMapper extends SNFMapper {
 	 * @param username
 	 * @return
 	 */
-	@Select("SELECT * FROM user_info WHERE username=#{username} ")
-	UserInfo byAccount(@Param("username") String username);
+	@Select("SELECT * FROM user_info WHERE userid=#{userid} ")
+	UserInfo byAccount(@Param("userid") String userid);
 
 	
 }

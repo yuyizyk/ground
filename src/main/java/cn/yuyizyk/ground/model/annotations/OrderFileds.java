@@ -6,33 +6,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 键（索引）
- * 
- * @author yuyi
- *
- */
+import cn.yuyizyk.ground.model.constant.Sort;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface Key {
+public @interface OrderFileds {
 
 	/**
-	 * 主键
+	 * 排序方式
+	 * 
+	 * @return
 	 */
-	static final int Primarykey = 0;
-	/**
-	 * 索引
-	 */
-	static final int Index = 1;
-
-	int value() default Primarykey;
+	Sort orderType() default Sort.ASC;
 
 	/**
-	 * 优先级 0 为最小优先
+	 * 优先权
 	 * 
 	 * @return
 	 */
 	int priority() default 0;
-
 }

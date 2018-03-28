@@ -29,7 +29,7 @@ public class ExclusionStrategyUtil {
 
 		@Override
 		public boolean shouldSkipClass(Class<?> clazz) {
-			return false;
+			return org.apache.ibatis.javassist.util.proxy.MethodHandler.class.isAssignableFrom(clazz) ? true : false;
 		}
 	}
 
@@ -43,7 +43,7 @@ public class ExclusionStrategyUtil {
 		return new RegularOutput() {
 			@Override
 			public boolean shouldSkipField(FieldAttributes f) {
-				return action.apply(f) & super.shouldSkipField(f);
+				return action.apply(f) && super.shouldSkipField(f);
 			}
 		};
 	}

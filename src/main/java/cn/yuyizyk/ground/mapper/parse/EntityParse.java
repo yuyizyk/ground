@@ -1,12 +1,8 @@
-package cn.yuyizyk.ground.mapper.provider;
+package cn.yuyizyk.ground.mapper.parse;
 
-import cn.yuyizyk.ground.mapper.entity.JoinField;
-
-public class EntityProvider {
+public class EntityParse {
 
 	public static final String toSQLFieldValue(Object val) {
-		if (val instanceof JoinField)
-			return val.toString();
 		return String.format(" '%s' ", val != null ? val.toString() : "");
 	}
 
