@@ -2,9 +2,7 @@ package cn.yuyizyk.ground.core.config;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -24,6 +22,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import cn.yuyizyk.ground.core.bean.ApplicationInfo;
+import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
+import cn.yuyizyk.ground.model.pojo.base.PojoFactoryImp;
 import cn.yuyizyk.ground.util.cls.LoaderUtil;
 
 /**
@@ -96,19 +96,18 @@ public class ApplicationDataConfig {
 		return sessionFactory.getObject();
 	}
 
-	@Bean
-	public ApplicationInfo applicationInfo() {
-		return ApplicationInfo.newInstance();
-	}
-
 	/**
-	 * 多表映射
+	 * 注册一个pojo工厂
 	 * 
 	 * @return
 	 */
 	@Bean
-	public Map<String, Object> mymapper() {
-		return new HashMap<String, Object>();
+	private PojoFactory pojoFactory() {
+		return PojoFactoryImp.newInstance();
 	}
 
+	@Bean
+	public ApplicationInfo applicationInfo() {
+		return ApplicationInfo.newInstance();
+	}
 }

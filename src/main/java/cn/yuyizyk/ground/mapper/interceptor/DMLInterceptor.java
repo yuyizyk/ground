@@ -25,13 +25,23 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import cn.yuyizyk.ground.model.annotations.Column;
+import cn.yuyizyk.ground.core.config.ApplicationDataConfig;
+import cn.yuyizyk.ground.model.annotations.AutoMap;
 import cn.yuyizyk.ground.model.annotations.Generated;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
+/**
+ * 对DMLSQL 进行AOP
+ * 
+ * @author yuyi
+ *
+ */
 @Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
-public class SqlInterceptor implements Interceptor {
+public class DMLInterceptor implements Interceptor {
+	private final static Logger log = LoggerFactory.getLogger(DMLInterceptor.class);
 
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
@@ -55,6 +65,10 @@ public class SqlInterceptor implements Interceptor {
 		args[0] = newMappedStatement(ms, resultType);
 
 		return invocation.proceed();
+	}
+
+	private Object generated(MappedStatement ms, Class<?> resultType) {
+		return ms;
 	}
 
 	private Object newMappedStatement(MappedStatement ms, Class<?> resultType) {

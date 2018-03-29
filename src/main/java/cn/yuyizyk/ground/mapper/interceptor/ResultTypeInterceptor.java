@@ -23,7 +23,7 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import cn.yuyizyk.ground.model.annotations.Column;
+import cn.yuyizyk.ground.model.annotations.AutoMap;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**
@@ -71,7 +71,7 @@ public class ResultTypeInterceptor implements Interceptor {
 				fields.forEach(f -> {
 					if ((f.getModifiers() & (java.lang.reflect.Modifier.STATIC)) == java.lang.reflect.Modifier.STATIC)
 						return;
-					Column auto = f.getAnnotation(Column.class);
+					AutoMap auto = f.getAnnotation(AutoMap.class);
 					if (auto != null) {
 						try {
 							f.setAccessible(true);

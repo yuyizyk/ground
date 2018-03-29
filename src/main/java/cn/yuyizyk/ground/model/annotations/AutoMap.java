@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.One;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface Column {
+public @interface AutoMap {
 
 	/**
 	 * 当前记录中传入参数

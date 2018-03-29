@@ -8,7 +8,6 @@ import java.util.Objects;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 
-import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.util.data.SerializationUtil;
 
 /**
@@ -17,10 +16,10 @@ import cn.yuyizyk.ground.util.data.SerializationUtil;
  * @author yuyi
  *
  */
-public class POJO implements Serializable {
+public abstract class POJO implements Serializable {
 
 	private transient static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 获得当前实体在数据库中的表名
 	 * 
@@ -29,20 +28,9 @@ public class POJO implements Serializable {
 	 * @return
 	 */
 	public String tableName() {
-		return tableName(this.getClass());
+		return PojoFactory.operation().tableName(this.getClass());
 	}
 
-	/**
-	 * 获得当前实体在数据库中的表名
-	 * 
-	 * @return
-	 */
-	public static final String tableName(Class<? extends POJO> cls) {
-		Objects.requireNonNull(cls, " pojo.class  is  null");
-		final Table table = cls.getAnnotation(Table.class);
-		Objects.requireNonNull(table, "POJO not comply Table Annotation");
-		return table.value();
-	}
 
 	/**
 	 * 将POJO转化为MAP对象

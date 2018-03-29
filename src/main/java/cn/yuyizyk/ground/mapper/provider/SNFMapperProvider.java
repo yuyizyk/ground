@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.apache.ibatis.jdbc.SQL;
 
+import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
 /**
@@ -31,7 +32,7 @@ public class SNFMapperProvider extends MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(T.tableName(snfpojo));
+				FROM(PojoFactory.operation().tableName(snfpojo));
 				idMap.forEach(a -> {
 					if (Objects.nonNull(a.getValue())) {
 						WHERE(new StringBuffer().append(toSQLFieldName(a.getKey())).append("=")
@@ -41,6 +42,5 @@ public class SNFMapperProvider extends MapperProvider {
 			}
 		}.toString();
 	}
-
 
 }

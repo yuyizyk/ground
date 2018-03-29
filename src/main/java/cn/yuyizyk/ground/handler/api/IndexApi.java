@@ -3,8 +3,8 @@ package cn.yuyizyk.ground.handler.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import cn.yuyizyk.ground.services.UserService;
 
@@ -15,7 +15,7 @@ public class IndexApi {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = { "/", "" })
+	@RequestMapping(value = { "/", "" }, method = RequestMethod.GET)
 	@ResponseBody
 	public String index() {
 		userService.byAccount("123");

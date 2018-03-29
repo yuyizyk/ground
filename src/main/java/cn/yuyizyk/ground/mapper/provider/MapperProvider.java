@@ -10,6 +10,7 @@ import java.util.Objects;
 import org.apache.ibatis.jdbc.SQL;
 
 import cn.yuyizyk.ground.model.pojo.base.POJO;
+import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
 
 /**
  * 单表sql语句拼装; <br/>
@@ -45,7 +46,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(T.tableName(cls));
+				FROM(PojoFactory.operation().tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -65,6 +66,7 @@ public class MapperProvider {
 
 	/**
 	 * 总数
+	 * 
 	 * @param cls
 	 * @param filterMap
 	 * @return
@@ -74,7 +76,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT(" count(1) ");
-				FROM(T.tableName(cls));
+				FROM(PojoFactory.operation().tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -98,7 +100,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				DELETE_FROM("*");
-				FROM(T.tableName(cls));
+				FROM(PojoFactory.operation().tableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -123,7 +125,7 @@ public class MapperProvider {
 		assert updataMap != null;
 		return new SQL() {
 			{
-				UPDATE(T.tableName(cls));
+				UPDATE(PojoFactory.operation().tableName(cls));
 				updataMap.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						SET(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
@@ -152,7 +154,7 @@ public class MapperProvider {
 		assert map != null;
 		return new SQL() {
 			{
-				INSERT_INTO(T.tableName(cls));
+				INSERT_INTO(PojoFactory.operation().tableName(cls));
 				map.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						VALUES(toSQLFieldName(k), toSQLFieldValue(v));

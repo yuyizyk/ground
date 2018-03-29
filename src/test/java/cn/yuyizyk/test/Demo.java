@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.yuyizyk.ground.core.WebApplicationInitializer;
 import cn.yuyizyk.ground.core.config.ApplicationDataConfig;
 import cn.yuyizyk.ground.mapper.UserMapper;
@@ -34,7 +36,8 @@ public class Demo {
 		// System.out.println(userMapper.list(ui));
 		// System.out.println(userMapper.list(ui));
 		ui.setAccount("123");
-		System.out.println(userMapper.insert1(ui));
+		System.out.println(JSONObject.toJSONString(ui.primaryKey()));
+		// System.out.println(userMapper.insert1(ui));
 
 		// ui.setUserid(null);
 		// UserInfo ui1 = new UserInfo();

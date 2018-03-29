@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.mapping.FetchType;
 
-import cn.yuyizyk.ground.model.annotations.Column;
+import cn.yuyizyk.ground.model.annotations.AutoMap;
 import cn.yuyizyk.ground.model.annotations.Generated;
 import cn.yuyizyk.ground.model.annotations.PrimaryKey;
 import cn.yuyizyk.ground.model.annotations.Table;
@@ -30,7 +30,7 @@ public class UserInfo extends SNFPOJO {
 	private transient String password;
 
 	private String account;
-	@Column(fieldName = "userid", many = @Many(select = "cn.yuyizyk.ground.mapper.RoleMapper.listByUserid", fetchType = FetchType.LAZY))
+	@AutoMap(fieldName = "userid", many = @Many(select = "cn.yuyizyk.ground.mapper.RoleMapper.listByUserid", fetchType = FetchType.LAZY))
 	private List<RoleInfo> roles;
 
 	public List<RoleInfo> getRoles() {
