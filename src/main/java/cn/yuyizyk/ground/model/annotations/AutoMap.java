@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.One;
 
 /**
  * 用于mybatis 生成自动ResultMap
+ * 
  * @author yuyi
  *
  */
@@ -20,10 +21,18 @@ import org.apache.ibatis.annotations.One;
 public @interface AutoMap {
 
 	/**
-	 * 当前记录中传入参数
+	 * pojo存值字段-一般为当前字段
+	 * 
 	 * @return
 	 */
-	String fieldName() default "";
+	String property() default "";
+
+	/**
+	 * 当前记录中传入参数字段
+	 * 
+	 * @return
+	 */
+	String column() default "";
 
 	Many many() default @Many;
 

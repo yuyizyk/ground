@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import cn.yuyizyk.ground.core.bean.ApplicationInfo;
-import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
-import cn.yuyizyk.ground.model.pojo.base.PojoFactoryImp;
+import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
+import cn.yuyizyk.ground.model.pojo.parser.imp.PojoDecoratorFactoryImp;
 import cn.yuyizyk.ground.util.cls.LoaderUtil;
 
 /**
@@ -97,13 +97,13 @@ public class ApplicationDataConfig {
 	}
 
 	/**
-	 * 注册一个pojo工厂
+	 * 注册一个pojo操作
 	 * 
 	 * @return
 	 */
 	@Bean
-	private PojoFactory pojoFactory() {
-		return PojoFactoryImp.newInstance();
+	private PojoDecoratorFactory pojoFactory() {
+		return PojoDecoratorFactoryImp.newInstance();
 	}
 
 	@Bean

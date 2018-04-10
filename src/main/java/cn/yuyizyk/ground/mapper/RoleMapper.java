@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
 
+import cn.yuyizyk.ground.mapper.base.SNFMapper;
 import cn.yuyizyk.ground.model.pojo.RoleInfo;
 
 public interface RoleMapper extends SNFMapper {

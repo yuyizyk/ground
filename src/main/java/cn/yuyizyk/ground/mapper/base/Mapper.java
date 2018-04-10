@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.mapper;
+package cn.yuyizyk.ground.mapper.base;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +53,8 @@ public interface Mapper {
 	 * @return
 	 */
 	@InsertProvider(type = MapperProvider.class, method = "insert")
+	@SelectKey(before = true, keyProperty = "userid,account", resultType = Map.class, statement = {
+			"select '123a','123' from dual " })
 	<T extends POJO> int insert(Class<T> cls, Map<String, Object> recordMap);
 
 	/**

@@ -1,20 +1,15 @@
 package cn.yuyizyk.ground.mapper.interceptor;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;
-import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
@@ -23,8 +18,8 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import cn.yuyizyk.ground.model.annotations.AutoMap;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
+import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * 查询sql 拦截器 <br/>
@@ -50,63 +45,35 @@ public class ResultTypeInterceptor implements Interceptor {
 		MappedStatement ms = (MappedStatement) args[0];
 		Object parameterObject = args[1];
 		// 获取参数中设置的返回值类型
-//		Class<?> resultType = getResultType(parameterObject);
-//		if (resultType == null) {
-//			resultType = ms.getResultMaps().get(0).getType();
-//			if (!POJO.class.isAssignableFrom(resultType)) {
-//				return invocation.proceed();
-//			}
-//		}
-//		// 复制ms，重设类型
-//		args[0] = newMappedStatement(ms, resultType);
+		Class<?> resultType = getResultType(parameterObject);
+		if (resultType == null) {
+			resultType = ms.getResultMaps().get(0).getType();
+			if (!POJO.class.isAssignableFrom(resultType)) {
+				return invocation.proceed();
+			}
+		}
+		// 复制ms，重设类型
+		args[0] = newMappedStatement(ms, resultType);
 		return invocation.proceed();
 	}
 
+	@SuppressWarnings("unchecked")
 	private Object newMappedStatement(MappedStatement ms, Class<?> resultType) {
-		List<ResultMap> map = ms.getResultMaps(), resultMap = new ArrayList<ResultMap>();
-		map.forEach(a -> {
-			if (POJO.class.isAssignableFrom(a.getType()) && a.getType().isAssignableFrom(resultType)) {
-				List<ResultMapping> newLi = new ArrayList<>(a.getIdResultMappings());
-				List<Field> fields = Arrays.asList(resultType.getDeclaredFields());
-				fields.forEach(f -> {
-					if ((f.getModifiers() & (java.lang.reflect.Modifier.STATIC)) == java.lang.reflect.Modifier.STATIC)
-						return;
-					AutoMap auto = f.getAnnotation(AutoMap.class);
-					if (auto != null) {
-						try {
-							f.setAccessible(true);
-							// 自动映射
-							ResultMapping.Builder b = new ResultMapping.Builder(ms.getConfiguration(), f.getName(),
-									StringUtils.isNotBlank(auto.fieldName()) ? auto.fieldName() : f.getName(),
-									f.getType());
-							if (StringUtils.isNotBlank(auto.many().select())) {
-								newLi.add(b.nestedQueryId(auto.many().select())
-										.lazy(auto.many().fetchType().equals(FetchType.LAZY)).build());
-								return;
-							} else if (StringUtils.isNotBlank(auto.one().select())) {
-								newLi.add(b.nestedQueryId(auto.one().select())
-										.lazy(auto.one().fetchType().equals(FetchType.LAZY)).build());
-								return;
-							} else {
-								throw new NullPointerException("  @Column is erro :" + f.getName());
-							}
-						} catch (IllegalArgumentException e) {
-							// log.error("", e);
-						}
-					}
-					ResultMapping r = new ResultMapping.Builder(ms.getConfiguration(), f.getName(), f.getName(),
-							f.getType()).build();
-					newLi.add(r);
-				});
-				resultMap.add(
-						new ResultMap.Builder(ms.getConfiguration(), a.getId(), resultType, newLi, a.getAutoMapping())
-								.build());
-			} else {
-				resultMap.add(a);
-			}
-		});
-		return new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), ms.getSqlSource(), ms.getSqlCommandType())
-				.resultMaps(resultMap).build();
+//		List<ResultMap> map = ms.getResultMaps(), resultMap = new ArrayList<ResultMap>();
+//		map.forEach(a -> {
+//			if (POJO.class.isAssignableFrom(a.getType()) && a.getType().isAssignableFrom(resultType)) {
+//				resultMap
+//						.add(new ResultMap.Builder(
+//								ms.getConfiguration(), a.getId(), resultType, PojoDecoratorFactory.operation()
+//										.toResultMappingList((Class<? extends POJO>) resultType, ms.getConfiguration()),
+//								a.getAutoMapping()).build());
+//			} else {
+//				resultMap.add(a);
+//			}
+//		});
+//		return new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), ms.getSqlSource(), ms.getSqlCommandType())
+//				.resultMaps(resultMap).build();
+		return ms;
 	}
 
 	@SuppressWarnings("unchecked")

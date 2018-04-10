@@ -10,7 +10,8 @@ import java.util.Objects;
 import org.apache.ibatis.jdbc.SQL;
 
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
+import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
+import cn.yuyizyk.ground.model.pojo.parser.imp.PojoMapParser;
 
 /**
  * 单表sql语句拼装; <br/>
@@ -46,7 +47,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(PojoFactory.operation().tableName(cls));
+				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -76,7 +77,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT(" count(1) ");
-				FROM(PojoFactory.operation().tableName(cls));
+				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -100,7 +101,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				DELETE_FROM("*");
-				FROM(PojoFactory.operation().tableName(cls));
+				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -125,7 +126,7 @@ public class MapperProvider {
 		assert updataMap != null;
 		return new SQL() {
 			{
-				UPDATE(PojoFactory.operation().tableName(cls));
+				UPDATE(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
 				updataMap.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						SET(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
@@ -154,7 +155,7 @@ public class MapperProvider {
 		assert map != null;
 		return new SQL() {
 			{
-				INSERT_INTO(PojoFactory.operation().tableName(cls));
+				INSERT_INTO(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
 				map.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						VALUES(toSQLFieldName(k), toSQLFieldValue(v));

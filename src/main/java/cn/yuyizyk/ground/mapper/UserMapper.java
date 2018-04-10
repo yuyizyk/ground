@@ -3,6 +3,7 @@ package cn.yuyizyk.ground.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import cn.yuyizyk.ground.mapper.base.SNFMapper;
 import cn.yuyizyk.ground.model.pojo.UserInfo;
 
 public interface UserMapper extends SNFMapper {

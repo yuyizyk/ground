@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.mapper;
+package cn.yuyizyk.ground.mapper.base;
 
 import java.util.List;
 import java.util.Map;

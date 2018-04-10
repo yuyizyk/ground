@@ -2,6 +2,7 @@ package cn.yuyizyk.ground.model.pojo;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.mapping.FetchType;
 
 import cn.yuyizyk.ground.model.annotations.AutoMap;
@@ -9,9 +10,8 @@ import cn.yuyizyk.ground.model.annotations.Generated;
 import cn.yuyizyk.ground.model.annotations.PrimaryKey;
 import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
+import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
 import cn.yuyizyk.ground.util.data.SerializationUtil;
-import org.apache.ibatis.annotations.Many;
 
 /**
  * 用户表
@@ -20,7 +20,7 @@ import org.apache.ibatis.annotations.Many;
  *
  */
 @Table("user_info")
-public class UserInfo extends SNFPOJO {
+public class UserInfo extends TNFPOJO {
 	private static transient final long serialVersionUID = 1L;
 
 	@PrimaryKey
@@ -29,8 +29,10 @@ public class UserInfo extends SNFPOJO {
 
 	private transient String password;
 
+	@Generated
 	private String account;
-	@AutoMap(fieldName = "userid", many = @Many(select = "cn.yuyizyk.ground.mapper.RoleMapper.listByUserid", fetchType = FetchType.LAZY))
+
+	@AutoMap(column = "userid", many = @Many(select = "cn.yuyizyk.ground.mapper.RoleMapper.listByUserid", fetchType = FetchType.LAZY))
 	private List<RoleInfo> roles;
 
 	public List<RoleInfo> getRoles() {

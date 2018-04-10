@@ -10,6 +10,7 @@ public class RoleInfo extends SNFPOJO {
 
 	@PrimaryKey
 	private String roleid;
+	
 	private String rolename;
 
 	public String getRolename() {

@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface Generated {
-	String value() default "SELECT '123322231' ";
+	String value() default "cn.yuyizyk.ground.mapper.provider.SNFMapperProvider.primaryKey";
 }

@@ -1,7 +1,6 @@
 package cn.yuyizyk.ground.mapper.interceptor;
 
 import java.lang.reflect.Field;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,12 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator;
-import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
@@ -28,10 +24,9 @@ import org.apache.ibatis.plugin.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.yuyizyk.ground.core.config.ApplicationDataConfig;
-import cn.yuyizyk.ground.model.annotations.AutoMap;
 import cn.yuyizyk.ground.model.annotations.Generated;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
+import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * 对DMLSQL 进行AOP
@@ -67,40 +62,13 @@ public class DMLInterceptor implements Interceptor {
 		return invocation.proceed();
 	}
 
-	private Object generated(MappedStatement ms, Class<?> resultType) {
-		return ms;
-	}
-
+	@SuppressWarnings("unchecked")
 	private Object newMappedStatement(MappedStatement ms, Class<?> resultType) {
 		if (!(POJO.class.isAssignableFrom(resultType))) {
 			return ms;
 		}
-		List<ResultMap> ls = new ArrayList<>();
-
-		List<Field> fields = Arrays.asList(resultType.getDeclaredFields());
-		for (Field f : fields) {
-			if ((f.getModifiers() & (java.lang.reflect.Modifier.STATIC)) == java.lang.reflect.Modifier.STATIC)
-				continue;
-			Generated g = f.getAnnotation(Generated.class);
-			if (g != null) {
-				try {
-					// 自动映射
-					List<ResultMapping> newLi = new ArrayList<>();
-					ls.add(new ResultMap.Builder(ms.getConfiguration(), ms.getId() + "!SelectKey-Inline", f.getType(),
-							newLi).build());
-					SqlSource sqls = new StaticSqlSource(ms.getConfiguration(), g.value());
-					SelectKeyGenerator s = new SelectKeyGenerator(
-							new MappedStatement.Builder(ms.getConfiguration(), ms.getId() + "!SelectKey", sqls,
-									ms.getSqlCommandType()).keyProperty("userid").resultMaps(ls).build(),
-							true);
-					return new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), ms.getSqlSource(),
-							ms.getSqlCommandType()).keyGenerator(s).build();
-				} catch (IllegalArgumentException e) {
-					// log.error("", e);
-				}
-			}
-		}
-		return ms;
+		//return PojoDecoratorFactory.operation().toGeneratedMappedStatement((Class<? extends POJO>)resultType, ms, resultType);
+	return ms;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -9,8 +9,8 @@ import java.util.Objects;
 
 import org.apache.ibatis.jdbc.SQL;
 
-import cn.yuyizyk.ground.model.pojo.base.PojoFactory;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
+import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * SNF单表sql语句拼装; </>
@@ -19,6 +19,19 @@ import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
  *
  */
 public class SNFMapperProvider extends MapperProvider {
+
+	/**
+	 * 
+	 * @param snfpojo
+	 */
+	public <T extends SNFPOJO> String primaryKey(Class<T> snfpojo) {
+		Objects.requireNonNull(snfpojo, " snfpojo is null ");
+		return new SQL() {
+			{
+				SELECT(" '123a1231111' as userid,'asdfvb' as account ");
+			}
+		}.toString();
+	}
 
 	/**
 	 * 通过ID获取
@@ -32,7 +45,7 @@ public class SNFMapperProvider extends MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(PojoFactory.operation().tableName(snfpojo));
+				FROM(PojoDecoratorFactory.operation().tableName(snfpojo));
 				idMap.forEach(a -> {
 					if (Objects.nonNull(a.getValue())) {
 						WHERE(new StringBuffer().append(toSQLFieldName(a.getKey())).append("=")
