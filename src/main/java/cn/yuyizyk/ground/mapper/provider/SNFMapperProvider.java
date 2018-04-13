@@ -1,7 +1,7 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.parser.EntityParse.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.parser.EntityParse.toSQLFieldValue;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,8 +9,9 @@ import java.util.Objects;
 
 import org.apache.ibatis.jdbc.SQL;
 
+import cn.yuyizyk.ground.mapper.parser.PojoDecoratorFactory;
+import cn.yuyizyk.ground.mapper.parser.imp.PojoMapParser;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * SNF单表sql语句拼装; </>
@@ -45,7 +46,7 @@ public class SNFMapperProvider extends MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(PojoDecoratorFactory.operation().tableName(snfpojo));
+				FROM(pojoMapParser.getTableName(snfpojo));
 				idMap.forEach(a -> {
 					if (Objects.nonNull(a.getValue())) {
 						WHERE(new StringBuffer().append(toSQLFieldName(a.getKey())).append("=")

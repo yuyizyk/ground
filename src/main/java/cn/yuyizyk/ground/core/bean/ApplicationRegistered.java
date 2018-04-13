@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.model.pojo.parser.imp;
+package cn.yuyizyk.ground.core.bean;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -6,30 +6,42 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-import cn.yuyizyk.ground.core.bean.ApplicationInfo;
+import cn.yuyizyk.ground.mapper.parser.PojoType;
 import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
-import cn.yuyizyk.ground.model.pojo.parser.PojoType;
 
 /**
- * pojo工厂
+ * 资源注册器
  * 
  * @author yuyi
  *
  */
-public class PojoDecoratorFactoryImp implements PojoDecoratorFactory {
-	private final static Logger log = LoggerFactory.getLogger(PojoDecoratorFactoryImp.class);
-	private final static PojoDecoratorFactoryImp pojoFactory = new PojoDecoratorFactoryImp();
+@PropertySource("properties/init.properties")
+public final class ApplicationRegistered {
+	private final static Logger log = LoggerFactory.getLogger(ApplicationRegistered.class);
+	@Value(value = "interceptors")
+	private String interceptors;
 
-	@SuppressWarnings("unchecked")
-	public void init() {
+	private ApplicationRegistered() {
+	}
+
+	public static final void registered(ApplicationContext arg0) {
+		initPojoType(arg0);
+	}
+
+	@Value("pojo_resources")
+	private String pojoResources;
+
+	private static void initPojoType(ApplicationContext arg0) {
 		// Set<Class<?>> set =
 		// LoaderUtil.getClzFromPkg("cn.yuyizyk.ground.model.pojo.parser");
 		/*
@@ -51,13 +63,11 @@ public class PojoDecoratorFactoryImp implements PojoDecoratorFactory {
 		// beanFactory.registerBeanDefinition(obj.getClass().getName(), beanDefinition);
 		// beanFactory.registerSingleton(beanName, singletonObject);
 		// System.out.println(applicationContext.getBean(SQLManager.class));
-
-		ConfigurableApplicationContext context = (ConfigurableApplicationContext) ApplicationInfo
-				.getApplicationContext();
+		ConfigurableApplicationContext context = (ConfigurableApplicationContext) arg0;
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
-		ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver(ApplicationInfo.getApplicationContext());
+		ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver(arg0);
 		try {
-			Resource[] resources = rpr.getResources("classpath:cn/yuyizyk/ground/model/pojo/**/*.class");
+			Resource[] resources = rpr.getResources("");
 			Stream.of(resources).map(f -> {
 				try {
 					return f.getURI().getPath().split("(classes/)|(!/)")[1].replace("/", ".").replace(".class", "");
@@ -81,14 +91,7 @@ public class PojoDecoratorFactoryImp implements PojoDecoratorFactory {
 		} catch (IOException e) {
 			log.error("初始化异常", e);
 		}
-	}
 
-	private PojoDecoratorFactoryImp() {
-		init();
-	}
-
-	public static final PojoDecoratorFactoryImp newInstance() {
-		return pojoFactory;
 	}
 
 }

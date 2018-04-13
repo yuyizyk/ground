@@ -18,8 +18,8 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import cn.yuyizyk.ground.mapper.parser.PojoDecoratorFactory;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * 查询sql 拦截器 <br/>

@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.model.pojo.parser;
+package cn.yuyizyk.ground.mapper.parser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

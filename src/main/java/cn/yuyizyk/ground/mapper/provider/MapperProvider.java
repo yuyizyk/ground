@@ -1,17 +1,17 @@
 package cn.yuyizyk.ground.mapper.provider;
 
-import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldName;
-import static cn.yuyizyk.ground.mapper.parse.EntityParse.toSQLFieldValue;
+import static cn.yuyizyk.ground.mapper.parser.EntityParse.toSQLFieldName;
+import static cn.yuyizyk.ground.mapper.parser.EntityParse.toSQLFieldValue;
 import static cn.yuyizyk.ground.mapper.provider.SqlForMySql.toPage;
 
 import java.util.Map;
 import java.util.Objects;
 
 import org.apache.ibatis.jdbc.SQL;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.yuyizyk.ground.mapper.parser.imp.PojoMapParser;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
-import cn.yuyizyk.ground.model.pojo.parser.imp.PojoMapParser;
 
 /**
  * 单表sql语句拼装; <br/>
@@ -21,6 +21,9 @@ import cn.yuyizyk.ground.model.pojo.parser.imp.PojoMapParser;
  *
  */
 public class MapperProvider {
+
+	@Autowired
+	protected PojoMapParser pojoMapParser;
 
 	/**
 	 * 返回指定的有序分页集合的sql语句
@@ -47,7 +50,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT("*");
-				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
+				FROM(pojoMapParser.getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -77,7 +80,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				SELECT(" count(1) ");
-				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
+				FROM(pojoMapParser.getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -101,7 +104,7 @@ public class MapperProvider {
 		return new SQL() {
 			{
 				DELETE_FROM("*");
-				FROM(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
+				FROM(pojoMapParser.getTableName(cls));
 				if (filterMap != null)
 					filterMap.forEach((k, v) -> {
 						if (Objects.nonNull(v)) {
@@ -126,7 +129,7 @@ public class MapperProvider {
 		assert updataMap != null;
 		return new SQL() {
 			{
-				UPDATE(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
+				UPDATE(pojoMapParser.getTableName(cls));
 				updataMap.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						SET(new StringBuffer().append(toSQLFieldName(k)).append("=").append(toSQLFieldValue(v))
@@ -155,7 +158,7 @@ public class MapperProvider {
 		assert map != null;
 		return new SQL() {
 			{
-				INSERT_INTO(PojoDecoratorFactory.operation().getPojoParser(PojoMapParser.class).getTableName(cls));
+				INSERT_INTO(pojoMapParser.getTableName(cls));
 				map.forEach((k, v) -> {
 					if (Objects.nonNull(v)) {
 						VALUES(toSQLFieldName(k), toSQLFieldValue(v));

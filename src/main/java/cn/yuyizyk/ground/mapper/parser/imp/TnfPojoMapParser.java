@@ -1,13 +1,13 @@
-package cn.yuyizyk.ground.model.pojo.parser.imp;
+package cn.yuyizyk.ground.mapper.parser.imp;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
+import cn.yuyizyk.ground.mapper.parser.PojoParser;
+import cn.yuyizyk.ground.mapper.parser.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoParser;
-import cn.yuyizyk.ground.model.pojo.parser.PojoType;
 
 /**
  * Tnf pojo map 映射器

@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.model.pojo.parser.imp;
+package cn.yuyizyk.ground.mapper.parser.imp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +6,11 @@ import java.util.function.BiFunction;
 
 import org.apache.ibatis.mapping.MappedStatement;
 
+import cn.yuyizyk.ground.mapper.parser.PojoColumsParser;
+import cn.yuyizyk.ground.mapper.parser.PojoParser;
+import cn.yuyizyk.ground.mapper.parser.PojoType;
+import cn.yuyizyk.ground.mapper.parser.PojoType.Columns;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoColumsParser;
-import cn.yuyizyk.ground.model.pojo.parser.PojoParser;
-import cn.yuyizyk.ground.model.pojo.parser.PojoType;
-import cn.yuyizyk.ground.model.pojo.parser.PojoType.Columns;
 
 public class GeneratedMappedParser implements PojoParser, PojoColumsParser {
 

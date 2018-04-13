@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.yuyizyk.ground.model.pojo.parser.imp.SnfPojoMapParser;
+import cn.yuyizyk.ground.mapper.parser.imp.SnfPojoMapParser;
 
 /**
  * 满足第二范式的实体类

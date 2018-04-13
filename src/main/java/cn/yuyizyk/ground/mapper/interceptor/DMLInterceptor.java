@@ -24,9 +24,9 @@ import org.apache.ibatis.plugin.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.yuyizyk.ground.mapper.parser.PojoDecoratorFactory;
 import cn.yuyizyk.ground.model.annotations.Generated;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
-import cn.yuyizyk.ground.model.pojo.parser.PojoDecoratorFactory;
 
 /**
  * 对DMLSQL 进行AOP

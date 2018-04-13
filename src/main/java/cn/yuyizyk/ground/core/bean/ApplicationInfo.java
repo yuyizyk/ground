@@ -28,6 +28,7 @@ public class ApplicationInfo implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
 		applicationContext = arg0;
+		ApplicationRegistered.registered(arg0);
 	}
 
 }

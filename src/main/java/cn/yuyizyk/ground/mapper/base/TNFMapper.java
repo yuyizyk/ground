@@ -17,7 +17,7 @@ import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
  * @author yuyi
  *
  */
-public interface SNFMapper extends Mapper {
+public interface TNFMapper extends SNFMapper {
 
 	/**
 	 * 主键

@@ -1,4 +1,4 @@
-package cn.yuyizyk.ground.mapper.parse;
+package cn.yuyizyk.ground.mapper.parser;
 
 public class EntityParse {
 
