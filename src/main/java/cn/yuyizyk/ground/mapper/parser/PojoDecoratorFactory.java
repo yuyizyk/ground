@@ -1,6 +1,6 @@
 package cn.yuyizyk.ground.mapper.parser;
 
-import cn.yuyizyk.ground.core.bean.ApplicationInfo;
+import cn.yuyizyk.ground.beans.BeanContainer;
 
 public interface PojoDecoratorFactory {
 
@@ -10,14 +10,14 @@ public interface PojoDecoratorFactory {
 	 * @return
 	 */
 	public static PojoDecoratorFactory operation() {
-		return ApplicationInfo.getApplicationContext().getBean(PojoDecoratorFactory.class);
+		return BeanContainer.getBean(PojoDecoratorFactory.class);
 	}
 
 	public default <T extends PojoParser> T getPojoParser(Class<T> cls) {
-		return ApplicationInfo.getApplicationContext().getBean(cls);
+		return BeanContainer.getBean(cls);
 	}
 
 	public default <T extends PojoColumsParser> T getPojoColumsParser(Class<T> cls) {
-		return ApplicationInfo.getApplicationContext().getBean(cls);
+		return BeanContainer.getBean(cls);
 	}
 }

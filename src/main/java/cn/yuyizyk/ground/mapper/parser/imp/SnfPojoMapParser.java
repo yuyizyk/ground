@@ -9,7 +9,7 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
-import cn.yuyizyk.ground.mapper.parser.PojoType;
+import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 

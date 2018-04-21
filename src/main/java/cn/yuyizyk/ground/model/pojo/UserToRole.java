@@ -1,6 +1,6 @@
 package cn.yuyizyk.ground.model.pojo;
 
-import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**

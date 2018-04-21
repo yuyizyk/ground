@@ -1,7 +1,7 @@
 package cn.yuyizyk.ground.model.pojo;
 
-import cn.yuyizyk.ground.model.annotations.PrimaryKey;
-import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.annotations.PrimaryKey;
+import cn.yuyizyk.ground.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
 
 @Table("role_info")

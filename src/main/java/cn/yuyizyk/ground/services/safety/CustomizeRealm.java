@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cn.yuyizyk.ground.core.config.ApplicationConfig;
+import cn.yuyizyk.ground.application.config.ApplicationConfig;
 import cn.yuyizyk.ground.model.pojo.RoleInfo;
 import cn.yuyizyk.ground.model.pojo.UserInfo;
 import cn.yuyizyk.ground.services.UserService;

@@ -1,25 +1,14 @@
 package cn.yuyizyk.test;
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.stream.Stream;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import cn.yuyizyk.ground.core.WebApplicationInitializer;
-import cn.yuyizyk.ground.core.bean.ApplicationInfo;
-import cn.yuyizyk.ground.core.config.ApplicationDataConfig;
+import cn.yuyizyk.ground.application.WebApplicationInitializer;
+import cn.yuyizyk.ground.application.config.ApplicationDataConfig;
 import cn.yuyizyk.ground.mapper.UserMapper;
-import cn.yuyizyk.ground.model.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.UserInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
-import cn.yuyizyk.ground.mapper.parser.PojoType;
+import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
 
 /**

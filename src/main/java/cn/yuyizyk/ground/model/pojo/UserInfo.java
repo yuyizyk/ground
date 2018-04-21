@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.mapping.FetchType;
 
-import cn.yuyizyk.ground.model.annotations.AutoMap;
-import cn.yuyizyk.ground.model.annotations.Generated;
-import cn.yuyizyk.ground.model.annotations.PrimaryKey;
-import cn.yuyizyk.ground.model.annotations.Table;
+import cn.yuyizyk.ground.annotations.AutoMap;
+import cn.yuyizyk.ground.annotations.Generated;
+import cn.yuyizyk.ground.annotations.PrimaryKey;
+import cn.yuyizyk.ground.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
 import cn.yuyizyk.ground.util.data.SerializationUtil;

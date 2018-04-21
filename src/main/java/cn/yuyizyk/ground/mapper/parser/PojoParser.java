@@ -1,5 +1,7 @@
 package cn.yuyizyk.ground.mapper.parser;
 
+import cn.yuyizyk.ground.model.pojo.addition.PojoType;
+
 /**
  * pojo解析器
  * 

@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.yuyizyk.ground.core.bean.SysConstant;
+import cn.yuyizyk.ground.constant.Predefined;
 import cn.yuyizyk.ground.handler.base.AbstractApi;
 import cn.yuyizyk.ground.model.pojo.RoleInfo;
 import cn.yuyizyk.ground.model.pojo.UserInfo;
@@ -49,7 +49,7 @@ public class LoginApi extends AbstractApi {
 			 * for (Role role : roles) { Set<Module> moduless = role.getModules(); for
 			 * (Module m : moduless) System.out.println(m.getName()); }
 			 */
-			session.put(SysConstant.CURRENT_USER_INFO, curUser); // Principal 当前用户对象
+			session.put(Predefined.CURRENT_USER_INFO, curUser); // Principal 当前用户对象
 		} catch (AuthenticationException ex) {
 			super.put("errorInfo", "用户名密码错误，请重新填写!");
 			ex.printStackTrace();

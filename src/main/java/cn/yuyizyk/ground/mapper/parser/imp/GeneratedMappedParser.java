@@ -8,8 +8,8 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 import cn.yuyizyk.ground.mapper.parser.PojoColumsParser;
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
-import cn.yuyizyk.ground.mapper.parser.PojoType;
-import cn.yuyizyk.ground.mapper.parser.PojoType.Columns;
+import cn.yuyizyk.ground.model.pojo.addition.PojoType;
+import cn.yuyizyk.ground.model.pojo.addition.PojoType.Columns;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 public class GeneratedMappedParser implements PojoParser, PojoColumsParser {

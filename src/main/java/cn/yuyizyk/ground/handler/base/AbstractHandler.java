@@ -2,7 +2,7 @@ package cn.yuyizyk.ground.handler.base;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.yuyizyk.ground.core.cache.HttpSession;
+import cn.yuyizyk.ground.application.cache.HttpSession;
 
 /**
  * 抽象handler
