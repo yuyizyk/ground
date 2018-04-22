@@ -15,16 +15,15 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
-import cn.yuyizyk.ground.mapper.parser.PojoDecoratorFactory;
+import cn.yuyizyk.ground.beans.BeanContainer;
+import cn.yuyizyk.ground.constant.AppConstantInfoInitializer;
 import cn.yuyizyk.ground.util.cls.LoaderUtil;
 
 /**
@@ -36,18 +35,8 @@ import cn.yuyizyk.ground.util.cls.LoaderUtil;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @MapperScan(basePackages = { "cn.yuyizyk.ground.mapper" })
-@PropertySource("classpath:properties/init.properties")
 public class ApplicationDataConfig {
 	private final static Logger log = LoggerFactory.getLogger(ApplicationDataConfig.class);
-
-	@Value("${interceptors_basePackages}")
-	private String interceptorsBasePackages;
-
-	@Value("${info_properties_path}")
-	private String infoPropertiesPath;
-
-	@Value("${jdbc_properties_path}")
-	private String jdbcPropertiesPath;
 
 	@Bean(name = "initProperties")
 	public Properties initProperties() {
@@ -63,11 +52,12 @@ public class ApplicationDataConfig {
 	}
 
 	@Bean(name = "jdbcProperties")
-	public Properties jdbcProperties() {
+	public Properties jdbcProperties(Properties initProperties) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties p = new Properties();
 		try {
-			p.load(new BufferedReader(new InputStreamReader(loader.getResourceAsStream(jdbcPropertiesPath))));
+			p.load(new BufferedReader(new InputStreamReader(
+					loader.getResourceAsStream(initProperties.getProperty("jdbcPropertiesPath")))));
 		} catch (IOException e) {
 			log.error("获得配置发生异常", e);
 			System.exit(0);
@@ -76,11 +66,12 @@ public class ApplicationDataConfig {
 	}
 
 	@Bean(name = "infoProperties")
-	public Properties infoProperties() {
+	public Properties infoProperties(Properties initProperties) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties p = new Properties();
 		try {
-			p.load(new BufferedReader(new InputStreamReader(loader.getResourceAsStream(infoPropertiesPath))));
+			p.load(new BufferedReader(new InputStreamReader(
+					loader.getResourceAsStream(initProperties.getProperty("infoPropertiesPath")))));
 		} catch (IOException e) {
 			log.error("获得配置发生异常", e);
 			System.exit(0);
@@ -108,9 +99,9 @@ public class ApplicationDataConfig {
 	}
 
 	@Bean
-	public Interceptor[] interceptors() {
+	public Interceptor[] interceptors(Properties initProperties) {
 		List<Interceptor> li = new ArrayList<>();
-		LoaderUtil.scanning(interceptorsBasePackages, a -> {
+		LoaderUtil.scanning(initProperties.getProperty("interceptorsBasePackages"), a -> {
 			if (Interceptor.class.isAssignableFrom(a)) {
 				try {
 					li.add((Interceptor) a.newInstance());
@@ -131,15 +122,22 @@ public class ApplicationDataConfig {
 		return sessionFactory.getObject();
 	}
 
+	
 	/**
-	 * 注册一个pojo操作
 	 * 
 	 * @return
 	 */
 	@Bean
-	private PojoDecoratorFactory pojoFactory() {
-		return new PojoDecoratorFactory() {
-		};
+	private BeanContainer beanContainer() {
+		return new BeanContainer();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	@Bean
+	private AppConstantInfoInitializer appConstantInfoInitializer() {
+		return new AppConstantInfoInitializer();
+	}
 }

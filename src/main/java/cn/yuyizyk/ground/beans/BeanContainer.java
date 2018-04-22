@@ -4,8 +4,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import cn.yuyizyk.ground.constant.AppConfigInfo;
+
 /**
- * bean容器
+ * 顶级spring bean容器
  * 
  * @author yuyi
  *
@@ -25,5 +27,7 @@ public class BeanContainer implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
 		context = arg0;
+		if (context.getParent() == null)
+			DynaRegisterBean.init(context);
 	}
 }

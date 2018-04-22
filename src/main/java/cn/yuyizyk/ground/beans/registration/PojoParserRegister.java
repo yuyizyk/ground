@@ -12,7 +12,7 @@ import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 @Scanning(resources = "classpath:cn/yuyizyk/ground/mapper/parser/**/*.class")
-public class PojoParserRegister implements BeanScanningRegister {
+public class PojoParserRegister extends AbstractRegister {
 	private final static Logger log = LoggerFactory.getLogger(PojoParserRegister.class);
 
 	@Override

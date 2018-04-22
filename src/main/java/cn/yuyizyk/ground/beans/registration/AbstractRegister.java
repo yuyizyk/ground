@@ -17,11 +17,11 @@ import cn.yuyizyk.ground.annotations.Scanning;
 import cn.yuyizyk.ground.exception.InitException;
 import cn.yuyizyk.ground.util.cls.LoaderUtil;
 
-public interface BeanScanningRegister extends BeanRegister {
-	final static Logger log = LoggerFactory.getLogger(BeanScanningRegister.class);
+public abstract class AbstractRegister implements BeanRegister {
+	private final static Logger log = LoggerFactory.getLogger(PojoTypeRegister.class);
 
-	default void scanning(String resourcesStr, ResourcePatternResolver rpr, ConfigurableListableBeanFactory beanFactory,
-			BeanScanningRegister br) throws IOException {
+	protected void scanning(String resourcesStr, ResourcePatternResolver rpr,
+			ConfigurableListableBeanFactory beanFactory, BeanRegister br) throws IOException {
 		Resource[] resources = rpr.getResources(resourcesStr);
 		LoaderUtil.scanningResource(resources, f -> {
 			try {
@@ -33,12 +33,16 @@ public interface BeanScanningRegister extends BeanRegister {
 		});
 	}
 
-	default void scanning(String basePackage, ConfigurableListableBeanFactory beanFactory, BeanScanningRegister br) {
+	protected void scanning(String basePackage, ConfigurableListableBeanFactory beanFactory, BeanRegister br) {
 		Set<Class<?>> set = LoaderUtil.scanning(basePackage);
 		set.forEach(c -> br.register(beanFactory, c));
 	}
 
-	default void scanning(ApplicationContext context, BeanScanningRegister br) throws IOException {
+	public void scanning(ApplicationContext context) throws IOException {
+		scanning(context, this);
+	}
+
+	public void scanning(ApplicationContext context, BeanRegister br) throws IOException {
 		log.info("scanning Register {} ", this.getClass().getSimpleName());
 		Scanning scann = this.getClass().getAnnotation(Scanning.class);
 		if (scann == null) {
@@ -55,5 +59,4 @@ public interface BeanScanningRegister extends BeanRegister {
 			scanning(resource, rpr, beanFactory, br);
 
 	}
-
 }

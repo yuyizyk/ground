@@ -6,13 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
+import cn.yuyizyk.ground.annotations.NeedRegisters;
 import cn.yuyizyk.ground.annotations.Scanning;
 import cn.yuyizyk.ground.annotations.Table;
 import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
+@NeedRegisters(PojoParserRegister.class)
 @Scanning(resources = "classpath:cn/yuyizyk/ground/model/pojo/**/*.class")
-public class PojoTypeRegister implements BeanScanningRegister {
+public class PojoTypeRegister extends AbstractRegister {
 	private final static Logger log = LoggerFactory.getLogger(PojoTypeRegister.class);
 
 	@Override

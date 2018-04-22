@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cn.yuyizyk.ground.mapper.parser.PojoDecoratorFactory;
+import cn.yuyizyk.ground.beans.BeanContainer;
 import cn.yuyizyk.ground.mapper.parser.imp.PojoMapParser;
 import cn.yuyizyk.ground.model.entity.Entitry;
 import cn.yuyizyk.ground.util.data.SerializationUtil;
@@ -19,8 +19,6 @@ public abstract class POJO extends Entitry<POJO> {
 
 	private transient static final long serialVersionUID = 1L;
 
-	protected transient static final PojoDecoratorFactory POJO_DECORATOR_FACTORY = PojoDecoratorFactory.operation();
-
 	/**
 	 * 获得当前实体在数据库中的表名
 	 * 
@@ -29,7 +27,7 @@ public abstract class POJO extends Entitry<POJO> {
 	 * @return
 	 */
 	public String tableName() {
-		return POJO_DECORATOR_FACTORY.getPojoParser(PojoMapParser.class).getTableName(this.getClass());
+		return BeanContainer.getBean(PojoMapParser.class).getTableName(this.getClass());
 	}
 
 	/**
@@ -38,7 +36,7 @@ public abstract class POJO extends Entitry<POJO> {
 	 * @return
 	 */
 	public List<Entry<String, Object>> indexKeys() {
-		return POJO_DECORATOR_FACTORY.getPojoParser(PojoMapParser.class).getIndexKey(this);
+		return BeanContainer.getBean(PojoMapParser.class).getIndexKey(this);
 	}
 
 	/**

@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.yuyizyk.ground.beans.BeanContainer;
 import cn.yuyizyk.ground.mapper.parser.imp.SnfPojoMapParser;
 
 /**
@@ -24,7 +25,7 @@ public abstract class SNFPOJO extends POJO {
 	 * @return
 	 */
 	public List<Entry<String, Object>> primaryKeys() {
-		return POJO_DECORATOR_FACTORY.getPojoParser(SnfPojoMapParser.class).getPrimaryKey(this);
+		return BeanContainer.getBean(SnfPojoMapParser.class).getPrimaryKey(this);
 	}
 
 }
