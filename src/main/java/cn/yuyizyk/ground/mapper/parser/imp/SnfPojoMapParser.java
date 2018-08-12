@@ -3,12 +3,12 @@ package cn.yuyizyk.ground.mapper.parser.imp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
+import cn.yuyizyk.ground.mapper.parser.imp.PojoMapParser.PojoMap;
 import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
@@ -19,16 +19,13 @@ import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
  * @author yuyi
  *
  */
-public class SnfPojoMapParser implements PojoParser {
-
+public class SnfPojoMapParser implements PojoParser<SNFPOJO> {
+	private Map<Class<? extends POJO>, SnfPojoMap> snfpojoMap = new HashMap<>();
 	private Map<Class<? extends POJO>, Function<SNFPOJO, List<Entry<String, Object>>>> primaryKeys = new HashMap<>();
 
-	@Autowired
-	PojoMapParser pojoMapParser;
-
 	@Override
-	public void parser(PojoType pojo) {
-		if (!SNFPOJO.class.isAssignableFrom(pojo.getClass()))
+	public void parser(Class<SNFPOJO> clz) {
+		if (!SNFPOJO.class.isAssignableFrom(clz))
 			return;
 	}
 
@@ -37,4 +34,7 @@ public class SnfPojoMapParser implements PojoParser {
 		return primaryKeys.get(snfpojo.getClass()).apply(snfpojo);
 	}
 
+	static class SnfPojoMap extends PojoMapParser.PojoMap {
+		protected Function<POJO, Set<Entry<String, Object>>> primaryKeyGetter;
+	}
 }

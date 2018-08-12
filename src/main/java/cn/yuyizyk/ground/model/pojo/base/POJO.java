@@ -3,6 +3,7 @@ package cn.yuyizyk.ground.model.pojo.base;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import cn.yuyizyk.ground.beans.BeanContainer;
 import cn.yuyizyk.ground.mapper.parser.imp.PojoMapParser;
@@ -35,7 +36,7 @@ public abstract class POJO extends Entitry<POJO> {
 	 * 
 	 * @return
 	 */
-	public List<Entry<String, Object>> indexKeys() {
+	public Set<Entry<String, Object>> indexKeys() {
 		return BeanContainer.getBean(PojoMapParser.class).getIndexKey(this);
 	}
 

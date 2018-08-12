@@ -1,13 +1,14 @@
 package cn.yuyizyk.ground.mapper.parser.imp;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
+import cn.yuyizyk.ground.annotations.Table;
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
-import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**
@@ -16,32 +17,38 @@ import cn.yuyizyk.ground.model.pojo.base.POJO;
  * @author yuyi
  *
  */
-public class PojoMapParser implements PojoParser {
+public class PojoMapParser implements PojoParser<POJO> {
 
-	private Map<Class<? extends POJO>, PojoType> pojoMap = new HashMap<>();
-	private Map<Class<? extends POJO>, Function<POJO, List<Entry<String, Object>>>> indexKeys = new HashMap<>();
+	private static final Map<Class<? extends POJO>, PojoMap> pojoMaps = new HashMap<>();
 
 	@Override
-	public void parser(PojoType pojo) {
-		pojoMap.put(pojo.getType(), pojo);
+	public void parser(Class<POJO> clz) {
+		PojoMap pojom = new PojoMap();
+		pojom.clz = clz;
+		pojom.tableName = clz.getAnnotation(Table.class).value();
+		pojom.indexKeyGetter = pojo -> {
+			return new TreeSet<>();
+		};
+		pojoMaps.put(clz, pojom);
 	}
 
-	public boolean check(Class<? extends POJO> cls) {
-		return pojoMap.containsKey(cls);
+	public static boolean check(Class<? extends POJO> cls) {
+		return pojoMaps.containsKey(cls);
 	}
 
-	public PojoType getPojoType(Class<? extends POJO> cls) {
-		return pojoMap.get(cls);
+	public static final String getTableName(Class<? extends POJO> cls) {
+		assert pojoMaps.containsKey(cls);
+		return pojoMaps.get(cls).tableName;
 	}
 
-	public String getTableName(Class<? extends POJO> cls) {
-		assert pojoMap.containsKey(cls);
-		return pojoMap.get(cls).getTableInfo().value();
+	public static Set<Entry<String, Object>> getIndexKey(POJO pojo) {
+		assert pojoMaps.containsKey(pojo.getClass());
+		return pojoMaps.get(pojo.getClass()).indexKeyGetter.apply(pojo);
 	}
 
-	public List<Entry<String, Object>> getIndexKey(POJO pojo) {
-		assert indexKeys.containsKey(pojo.getClass());
-		return indexKeys.get(pojo.getClass()).apply(pojo);
+	static class PojoMap {
+		protected Class<? extends POJO> clz;
+		protected String tableName;
+		protected Function<POJO, Set<Entry<String, Object>>> indexKeyGetter;
 	}
-	
 }

@@ -1,6 +1,6 @@
 package cn.yuyizyk.ground.mapper.parser;
 
-import cn.yuyizyk.ground.model.pojo.addition.PojoType;
+import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**
  * pojo解析器
@@ -8,7 +8,7 @@ import cn.yuyizyk.ground.model.pojo.addition.PojoType;
  * @author yuyi
  *
  */
-public interface PojoParser {
+public interface PojoParser<T extends POJO> {
 
 	/**
 	 * 解析
@@ -16,6 +16,5 @@ public interface PojoParser {
 	 * @param pojo
 	 * @return
 	 */
-	public void parser(PojoType pojo);
-
+	public void parser(Class<T> pojo);
 }

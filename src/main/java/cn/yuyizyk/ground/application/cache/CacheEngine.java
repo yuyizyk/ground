@@ -23,7 +23,7 @@ public interface CacheEngine {
 			Parameters params = new Parameters();
 			FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<PropertiesConfiguration>(
 					PropertiesConfiguration.class)
-							.configure(params.properties().setFileName("properties/info.properties")); // 那么这个文件会自动在下面几个地方被搜寻：当前目录
+							.configure(params.properties().setFileName("properties/info_properties())); // 那么这个文件会自动在下面几个地方被搜寻：当前目录
 			// 、用户主目录
 			// 、classpath
 			confing = builder.getConfiguration();

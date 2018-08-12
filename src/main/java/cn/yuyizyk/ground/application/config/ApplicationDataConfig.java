@@ -43,7 +43,7 @@ public class ApplicationDataConfig {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties p = new Properties();
 		try {
-			p.load(new BufferedReader(new InputStreamReader(loader.getResourceAsStream("properties/init.properties"))));
+			p.load(new BufferedReader(new InputStreamReader(loader.getResourceAsStream("properties/init_properties()))));
 		} catch (IOException e) {
 			log.error("获得配置发生异常", e);
 			System.exit(0);

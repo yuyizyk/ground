@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 
 import cn.yuyizyk.ground.mapper.parser.PojoParser;
-import cn.yuyizyk.ground.model.pojo.addition.PojoType;
 import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
 
 /**
@@ -15,19 +14,19 @@ import cn.yuyizyk.ground.model.pojo.base.TNFPOJO;
  * @author yuyi
  *
  */
-public class TnfPojoMapParser implements PojoParser {
+public class TnfPojoMapParser implements PojoParser<TNFPOJO> {
 
 	private Map<Class<? extends TNFPOJO>, Function<TNFPOJO, Entry<String, Object>>> primaryKeys = new HashMap<>();
-
-	@Override
-	public void parser(PojoType pojo) {
-		if (!TNFPOJO.class.isAssignableFrom(pojo.getClass()))
-			return;
-	}
 
 	public Entry<String, Object> getPrimaryKey(TNFPOJO tnfpojo) {
 		assert primaryKeys.containsKey(tnfpojo.getClass());
 		return primaryKeys.get(tnfpojo.getClass()).apply(tnfpojo);
+	}
+
+	@Override
+	public void parser(Class<TNFPOJO> pojo) {
+		if (!TNFPOJO.class.isAssignableFrom(pojo.getClass()))
+			return;
 	}
 
 }

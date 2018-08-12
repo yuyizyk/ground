@@ -45,7 +45,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public FreeMarkerConfigurer freemarkerConfig() {
 		FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		InputStream inputStream = loader.getResourceAsStream("properties/freemarker.properties");
+		InputStream inputStream = loader.getResourceAsStream("properties/freemarker_properties());
 		Properties p = new Properties();
 		try {
 			p.load(inputStream);

@@ -26,7 +26,7 @@ import cn.yuyizyk.ground.application.filter.BaseFilter;
 @ComponentScan(basePackages = { "cn.yuyizyk.ground" }, excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 @Import(ApplicationDataConfig.class)
-// @PropertySource({"classpath:jdbc.properties"})
+// @PropertySource({"classpath:jdbc_properties()})
 // @ImportSource("XXXX.xml")
 // @Configuration，用于表示这个类是一个配置类，用于配置Spring的相关信息
 // @EnableAspectJAutoProxy，启用切面自动代理，用于AOP

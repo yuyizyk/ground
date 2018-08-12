@@ -44,7 +44,7 @@ import cn.yuyizyk.ground.model.pojo.base.SNFPOJO;
  * @author yuyi
  *
  */
-public class PojoType extends Entitry<PojoType> {
+public final class PojoType extends Entitry<PojoType> {
 	private static final transient long serialVersionUID = 1L;
 	private final static transient Logger log = LoggerFactory.getLogger(PojoType.class);
 
@@ -57,9 +57,18 @@ public class PojoType extends Entitry<PojoType> {
 	private Class<? extends POJO> cls;
 	private Table tableInfo = null;
 
-	public PojoType(Class<? extends POJO> c) {
+	static class PojoTypeB {
+
+		public static final PojoType create(Class<? extends POJO> c) {
+			PojoType pojotype = new PojoType(c);
+			return pojotype;
+		}
+
+	}
+
+	private PojoType(Class c) {
 		this.cls = c;
-		this.tableInfo = c.getAnnotation(Table.class);
+		this.tableInfo = (Table) c.getAnnotation(Table.class);
 		int isunion = 1;
 		PrimaryKey primaryKey = null;
 		Generated generated = null;

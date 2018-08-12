@@ -1,6 +1,8 @@
 package cn.yuyizyk.ground.mapper.parser;
 
-import cn.yuyizyk.ground.model.pojo.addition.PojoType;
+import java.lang.reflect.Field;
+
+import cn.yuyizyk.ground.model.pojo.base.POJO;
 
 /**
  * pojo解析器
@@ -8,7 +10,7 @@ import cn.yuyizyk.ground.model.pojo.addition.PojoType;
  * @author yuyi
  *
  */
-public interface PojoColumsParser {
+public interface PojoColumsParser<T extends POJO> {
 
 	/**
 	 * 解析
@@ -16,6 +18,6 @@ public interface PojoColumsParser {
 	 * @param pojo
 	 * @return
 	 */
-	public void columnsParser(PojoType.Columns colums);
+	public void parser(Class<T> c, Field colums);
 
 }
